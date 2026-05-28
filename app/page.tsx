@@ -1,51 +1,380 @@
 "use client"
 
-import { Play, Pause, ArrowUpRight, Film, Code2, Users, Instagram, Github } from "lucide-react"
-import { useState, useRef } from "react"
+import { ArrowUpRight, Menu, X } from "lucide-react"
+import { useState, useEffect } from "react"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { Sidebar } from "@/components/sidebar"
 
-// ヘッダー（ナビゲーション）
-function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
+type Lang = "en" | "jp"
+
+// ─── Content dictionary ───────────────────────────────────────────────────────
+
+const content = {
+  en: {
+    nav: {
+      timeline: "TIMELINE",
+      services: "SERVICES",
+      tools: "TOOLS",
+      contact: "CONTACT",
+    },
+    hero: {
+      label: "Strategy × Technology · Asia",
+      lines: [
+        "Intersecting Business Strategy",
+        "and Technology to Solve",
+        "Corporate Challenges",
+        "End-to-End.",
+      ],
+      cta: "Get in Touch",
+      scroll: "Scroll to explore",
+      caption: "Web · Video · CX · Strategy",
+    },
+    timeline: {
+      label: "Career",
+      title: "Timeline",
+      items: [
+        {
+          period: "2018 — 2023",
+          role: "Recruitment Consultant · Global Sales",
+          org: "Domestic & Foreign-Affiliated Firms",
+          description:
+            "Handled international business negotiations, operations, and English communications across domestic and foreign-affiliated firms. Nearly three years of overseas experience spanning multiple markets.",
+          tags: ["International Business", "B2B Sales", "Recruitment"],
+        },
+        {
+          period: "2023 — Present",
+          role: "Independent Freelancer · Asia",
+          org: "AI & Digital Strategy Sector",
+          description:
+            "Leading CX/CS operations for a leading AI talent development startup, driving video marketing strategy, and architecting bespoke web systems for enterprise clients.",
+          tags: ["CX/CS Operations", "Video Marketing", "Web Architecture"],
+        },
+      ],
+    },
+    services: {
+      label: "What I Do",
+      title: "Core Services",
+      items: [
+        {
+          number: "01",
+          title: "CX & Operations",
+          subtitle: "Customer Experience Design",
+          description:
+            "End-to-end UX journey design, workflow automation via kintone & Google Apps Script, and data analytics to optimise the full customer lifecycle and drive measurable growth.",
+          tags: ["UX Journey Design", "kintone", "GAS Automation", "Data Analytics"],
+        },
+        {
+          number: "02",
+          title: "Digital Content Creation",
+          subtitle: "Video Production · Social",
+          description:
+            "Corporate video production using Adobe Premiere Pro & After Effects, and platform-optimised SNS short-form vertical video — from concept through final delivery.",
+          tags: ["Premiere Pro", "After Effects", "SNS Video", "Corporate Film"],
+        },
+        {
+          number: "03",
+          title: "Web Development",
+          subtitle: "Full-Stack Engineering",
+          description:
+            "Custom system architecture and development across the full stack — from pixel-precise frontends to backend logic and database design, built on modern, maintainable foundations.",
+          tags: ["Laravel 10", "PHP", "JavaScript", "HTML5 / CSS3"],
+        },
+      ],
+    },
+    tools: {
+      label: "Skills",
+      title: "Tools & Technologies",
+    },
+    contact: {
+      label: "Contact",
+      lines: ["Ready to solve", "your next challenge."],
+      email: "contact@example.com",
+      tagline: "Open to freelance engagements · Asia & Remote",
+    },
+    footer: {
+      copy: "© 2026 Studio M",
+    },
+  },
+
+  jp: {
+    nav: {
+      timeline: "キャリア",
+      services: "サービス",
+      tools: "ツール",
+      contact: "お問い合わせ",
+    },
+    hero: {
+      label: "戦略 × テクノロジー・アジア",
+      lines: [
+        "ビジネスの視点と、",
+        "テクノロジーの技術を掛け合わせ、",
+        "法人の課題を",
+        "ワンストップで解決する。",
+      ],
+      cta: "お問い合わせ",
+      scroll: "スクロールして探索",
+      caption: "Web · 映像 · CX · 戦略",
+    },
+    timeline: {
+      label: "キャリア",
+      title: "タイムライン",
+      items: [
+        {
+          period: "2018 — 2023",
+          role: "採用コンサルタント・グローバル営業",
+          org: "国内外の企業",
+          description:
+            "国内外の企業にて国際商談・オペレーション・英語コミュニケーションを担当。約3年の海外経験を持ち、複数のマーケットでビジネスを展開。",
+          tags: ["国際ビジネス", "B2B営業", "採用支援"],
+        },
+        {
+          period: "2023 — 現在",
+          role: "独立フリーランス・アジア拠点",
+          org: "AI・デジタル戦略領域",
+          description:
+            "AIスタートアップのCX/CS運用を主導し、動画マーケティング戦略の推進および法人向けWebシステムの設計・構築を担当。",
+          tags: ["CX/CS運用", "動画マーケティング", "Webシステム"],
+        },
+      ],
+    },
+    services: {
+      label: "サービス内容",
+      title: "コアサービス",
+      items: [
+        {
+          number: "01",
+          title: "CX & オペレーション",
+          subtitle: "カスタマーエクスペリエンス設計",
+          description:
+            "UXジャーニー設計、kintone & GASによるワークフロー自動化、データ分析を通じてカスタマーライフサイクル全体を最適化し、成長を定量化する。",
+          tags: ["UXジャーニー設計", "kintone", "GAS自動化", "データ分析"],
+        },
+        {
+          number: "02",
+          title: "デジタルコンテンツ制作",
+          subtitle: "動画制作・SNSコンテンツ",
+          description:
+            "Adobe Premiere Pro & After Effectsによる企業動画制作、プラットフォーム最適化されたSNS縦型ショート動画を企画から納品まで一貫して対応。",
+          tags: ["Premiere Pro", "After Effects", "SNS動画", "企業PV"],
+        },
+        {
+          number: "03",
+          title: "Web開発",
+          subtitle: "フルスタックエンジニアリング",
+          description:
+            "フロントエンドからバックエンド・データベース設計まで、モダンで保守性の高い基盤によるカスタムシステムの設計・開発を担当。",
+          tags: ["Laravel 10", "PHP", "JavaScript", "HTML5 / CSS3"],
+        },
+      ],
+    },
+    tools: {
+      label: "スキル",
+      title: "ツール & テクノロジー",
+    },
+    contact: {
+      label: "お問い合わせ",
+      lines: ["次の課題を、", "共に解決しましょう。"],
+      email: "contact@example.com",
+      tagline: "フリーランス案件受付中・アジア & リモート対応",
+    },
+    footer: {
+      copy: "© 2026 Studio M",
+    },
+  },
+} as const
+
+const toolsList = [
+  "Laravel 10",
+  "PHP",
+  "JavaScript",
+  "HTML5 / CSS3",
+  "Google Apps Script",
+  "kintone",
+  "Adobe Premiere Pro",
+  "After Effects",
+  "Canva",
+  "Slack",
+  "Discord",
+  "Microsoft Teams",
+  "Zoom",
+  "Spreadsheet Analytics",
+]
+
+// ─── Language Toggle ──────────────────────────────────────────────────────────
+
+function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="px-6 md:px-12 lg:px-16 py-6">
+    <div className="flex items-center divide-x divide-border border border-border">
+      <button
+        onClick={() => setLang("en")}
+        aria-pressed={lang === "en"}
+        className={`px-3 py-1.5 text-[10px] tracking-[0.2em] transition-colors duration-200 ${
+          lang === "en"
+            ? "bg-foreground text-background"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+      >
+        EN
+      </button>
+      <button
+        onClick={() => setLang("jp")}
+        aria-pressed={lang === "jp"}
+        className={`px-3 py-1.5 text-[10px] tracking-[0.2em] transition-colors duration-200 ${
+          lang === "jp"
+            ? "bg-foreground text-background"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+      >
+        JP
+      </button>
+    </div>
+  )
+}
+
+// ─── Mobile Menu ──────────────────────────────────────────────────────────────
+
+function MobileMenu({
+  isOpen,
+  onClose,
+  lang,
+  setLang,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  lang: Lang
+  setLang: (l: Lang) => void
+}) {
+  const t = content[lang].nav
+
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = "hidden"
+    return () => { document.body.style.overflow = "" }
+  }, [isOpen])
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    document.addEventListener("keydown", handler)
+    return () => document.removeEventListener("keydown", handler)
+  }, [onClose])
+
+  return (
+    <>
+      <div
+        className={`fixed inset-0 bg-background/90 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <aside
+        className={`fixed top-0 right-0 h-full w-full max-w-xs bg-background border-l border-border z-50 transform transition-transform duration-300 ease-out ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between px-6 py-5 border-b border-border">
+            <LangToggle lang={lang} setLang={setLang} />
+            <button onClick={onClose} className="p-1.5 text-muted-foreground hover:text-foreground transition-colors" aria-label="Close menu">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <nav className="flex-1 px-6 py-8">
+            <ul className="space-y-0">
+              {[
+                { href: "#timeline", label: t.timeline },
+                { href: "#services", label: t.services },
+                { href: "#tools", label: t.tools },
+                { href: "#contact", label: t.contact },
+              ].map((item, i) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    onClick={onClose}
+                    className="flex items-center justify-between py-5 text-xl font-light text-muted-foreground hover:text-foreground border-b border-border transition-colors"
+                  >
+                    <span>{item.label}</span>
+                    <span className="text-[10px] tracking-widest text-muted-foreground">0{i + 1}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="px-6 py-6 border-t border-border">
+            <ThemeToggle />
+          </div>
+        </div>
+      </aside>
+    </>
+  )
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+
+function Header({
+  lang,
+  setLang,
+  onMenuOpen,
+}: {
+  lang: Lang
+  setLang: (l: Lang) => void
+  onMenuOpen: () => void
+}) {
+  const t = content[lang].nav
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-background/98 backdrop-blur-md border-b border-border/40"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="px-6 md:px-12 lg:px-16 py-5">
         <div className="flex justify-between items-center">
-          {/* ロゴ */}
-          <a href="#" className="group flex items-center gap-3">
-            <div className="w-8 h-8 border border-foreground flex items-center justify-center">
-              <span className="text-xs font-bold">M</span>
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-3 group">
+            <div className="w-7 h-7 border border-foreground/60 group-hover:border-foreground flex items-center justify-center transition-colors">
+              <span className="text-[10px] font-medium tracking-wider">M</span>
             </div>
-            <span className="text-sm font-medium tracking-wide hidden sm:block">
+            <span className="text-xs font-light tracking-[0.25em] hidden sm:block text-foreground/80 group-hover:text-foreground transition-colors">
               STUDIO M
             </span>
           </a>
 
-          {/* ナビゲーション */}
-          <nav className="hidden md:flex items-center">
-            <div className="flex items-center border border-border divide-x divide-border">
-              <a href="#works" className="px-5 py-2.5 text-xs tracking-wider hover:bg-foreground hover:text-background transition-colors">
-                WORKS
-              </a>
-              <a href="#services" className="px-5 py-2.5 text-xs tracking-wider hover:bg-foreground hover:text-background transition-colors">
-                SERVICES
-              </a>
-              <a href="#contact" className="px-5 py-2.5 text-xs tracking-wider bg-foreground text-background hover:bg-foreground/80 transition-colors">
-                CONTACT
-              </a>
-            </div>
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center divide-x divide-border border border-border">
+            <a href="#timeline" className="px-5 py-2.5 text-[10px] tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-secondary/40 transition-colors">
+              {t.timeline}
+            </a>
+            <a href="#services" className="px-5 py-2.5 text-[10px] tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-secondary/40 transition-colors">
+              {t.services}
+            </a>
+            <a href="#tools" className="px-5 py-2.5 text-[10px] tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-secondary/40 transition-colors">
+              {t.tools}
+            </a>
+            <a href="#contact" className="px-5 py-2.5 text-[10px] tracking-[0.2em] bg-foreground text-background hover:bg-foreground/85 transition-colors">
+              {t.contact}
+            </a>
           </nav>
 
-          {/* 右側 */}
+          {/* Right controls */}
           <div className="flex items-center gap-3">
+            <LangToggle lang={lang} setLang={setLang} />
             <ThemeToggle />
             <button
               onClick={onMenuOpen}
-              className="md:hidden w-10 h-10 border border-border flex flex-col items-center justify-center gap-1.5 hover:bg-foreground hover:text-background transition-colors"
-              aria-label="メニューを開く"
+              className="md:hidden w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Open menu"
             >
-              <div className="w-4 h-px bg-current" />
-              <div className="w-4 h-px bg-current" />
+              <Menu className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -54,186 +383,106 @@ function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
   )
 }
 
-// ヒーローセクション - 大胆なタイポグラフィ
-function HeroSection() {
-  const [isPlaying, setIsPlaying] = useState(true)
-  const videoRef = useRef<HTMLVideoElement>(null)
+// ─── Hero ─────────────────────────────────────────────────────────────────────
 
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause()
-      } else {
-        videoRef.current.play()
-      }
-      setIsPlaying(!isPlaying)
-    }
-  }
+function HeroSection({ lang }: { lang: Lang }) {
+  const t = content[lang].hero
+  const isJp = lang === "jp"
 
   return (
     <section className="min-h-screen flex flex-col">
-      {/* メインコンテンツ */}
-      <div className="flex-1 grid lg:grid-cols-2">
-        {/* 左側: タイポグラフィ */}
-        <div className="flex flex-col justify-center px-6 md:px-12 lg:px-16 py-32 lg:py-0">
-          <div className="space-y-8">
-            <p className="text-muted-foreground text-xs tracking-[0.3em] uppercase">
-              Creative Studio / Tokyo
-            </p>
-            <h1 className="text-[12vw] md:text-[8vw] lg:text-[5vw] font-black leading-[0.9] tracking-tighter">
-              つくる、
-              <br />
-              届ける、
-              <br />
-              <span className="text-muted-foreground">動かす。</span>
-            </h1>
-            <div className="pt-8 flex flex-col sm:flex-row gap-4">
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 text-sm font-medium hover:opacity-80 transition-opacity"
-              >
-                Get in Touch
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
-              <a
-                href="#works"
-                className="inline-flex items-center gap-2 border border-border px-6 py-3 text-sm font-medium hover:bg-secondary transition-colors"
-              >
-                View Works
-              </a>
-            </div>
-          </div>
-        </div>
+      <div className="flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-16 pt-28 pb-12">
+        <div className="max-w-5xl">
+          <p className="text-[10px] tracking-[0.45em] text-muted-foreground mb-14 uppercase">
+            {t.label}
+          </p>
 
-        {/* 右側: 動画エリア */}
-        <div className="relative bg-muted min-h-[50vh] lg:min-h-full">
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+          <h1
+            className={`leading-[1.15] tracking-tight mb-14 ${
+              isJp
+                ? "text-4xl sm:text-5xl md:text-6xl font-light"
+                : "text-[clamp(2.4rem,4.5vw,4rem)] font-extralight"
+            }`}
           >
-            <source
-              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-              type="video/mp4"
-            />
-          </video>
-          {/* コントロール */}
-          <button
-            onClick={togglePlay}
-            className="absolute bottom-6 right-6 w-12 h-12 bg-background/90 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
-            aria-label={isPlaying ? "停止" : "再生"}
-          >
-            {isPlaying ? (
-              <Pause className="w-4 h-4" />
-            ) : (
-              <Play className="w-4 h-4 ml-0.5" />
+            {t.lines.map((line, i) =>
+              i === t.lines.length - 1 ? (
+                <span key={i} className="text-muted-foreground">
+                  {line}
+                </span>
+              ) : (
+                <span key={i}>
+                  {line}
+                  <br />
+                </span>
+              )
             )}
-          </button>
-          {/* ラベル */}
-          <div className="absolute bottom-6 left-6">
-            <span className="text-xs tracking-widest text-white/80 bg-black/50 px-3 py-1.5">
-              SHOWREEL 2024
-            </span>
-          </div>
+          </h1>
+
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2.5 border border-foreground/50 px-7 py-3.5 text-[11px] tracking-[0.2em] hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300"
+          >
+            {t.cta}
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </a>
         </div>
       </div>
 
-      {/* ボトムバー */}
+      {/* Bottom bar */}
       <div className="border-t border-border px-6 md:px-12 lg:px-16 py-4">
-        <div className="flex justify-between items-center text-xs text-muted-foreground">
-          <span>Web / Video / CX</span>
-          <span>Scroll to explore</span>
+        <div className="flex justify-between items-center text-[10px] text-muted-foreground tracking-[0.25em]">
+          <span>{t.caption}</span>
+          <span>{t.scroll}</span>
         </div>
       </div>
     </section>
   )
 }
 
-// サービスカード
-const services = [
-  {
-    icon: Film,
-    number: "01",
-    title: "映像制作",
-    subtitle: "Video Production",
-    description:
-      "企画から編集まで一貫対応。企業PV、プロモーション動画、SNSコンテンツなど。",
-    tags: ["企画構成", "編集", "Premiere Pro", "After Effects"],
-  },
-  {
-    icon: Code2,
-    number: "02",
-    title: "WEB開発",
-    subtitle: "Web Development",
-    description:
-      "モダンな技術スタックでビジネスに最適なソリューションを構築。",
-    tags: ["Laravel", "React", "Next.js", "TypeScript"],
-  },
-  {
-    icon: Users,
-    number: "03",
-    title: "CX運用改善",
-    subtitle: "Customer Experience",
-    description:
-      "データドリブンなアプローチで顧客体験を最適化し、LTV向上を実現。",
-    tags: ["CX設計", "マーケティング", "データ分析"],
-  },
-]
+// ─── Timeline ─────────────────────────────────────────────────────────────────
 
-function ServicesSection() {
+function TimelineSection({ lang }: { lang: Lang }) {
+  const t = content[lang].timeline
+  const isJp = lang === "jp"
+
   return (
-    <section id="services" className="py-32 px-6 md:px-12 lg:px-16">
-      <div className="max-w-7xl mx-auto">
-        {/* ヘッダー */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20">
-          <div>
-            <p className="text-xs tracking-[0.3em] text-muted-foreground uppercase mb-4">
-              Services
-            </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">
-              What I Do
-            </h2>
-          </div>
-          <p className="text-muted-foreground max-w-md text-sm leading-relaxed">
-            WEB開発、映像制作、CX運用改善。
-            ビジネスの課題を解決する、統合的なクリエイティブサービス。
+    <section id="timeline" className="py-28 md:py-36 px-6 md:px-12 lg:px-16 bg-card">
+      <div className="max-w-5xl mx-auto">
+        <header className="mb-16 md:mb-20">
+          <p className="text-[10px] tracking-[0.45em] text-muted-foreground uppercase mb-5">
+            {t.label}
           </p>
-        </div>
+          <h2 className={`tracking-tight ${isJp ? "text-4xl md:text-5xl font-light" : "text-4xl md:text-5xl font-extralight"}`}>
+            {t.title}
+          </h2>
+        </header>
 
-        {/* サービスリスト */}
-        <div className="space-y-0">
-          {services.map((service, index) => (
+        <div>
+          {t.items.map((item, index) => (
             <div
               key={index}
-              className="group border-t border-border py-12 md:py-16"
+              className="border-t border-border py-12 md:py-16 grid md:grid-cols-12 gap-6 md:gap-10"
             >
-              <div className="grid md:grid-cols-12 gap-6 md:gap-8 items-start">
-                <div className="md:col-span-1">
-                  <span className="text-xs text-muted-foreground">
-                    {service.number}
-                  </span>
-                </div>
-                <div className="md:col-span-3">
-                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight group-hover:text-muted-foreground transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground mt-1 tracking-wider">
-                    {service.subtitle}
-                  </p>
-                </div>
-                <div className="md:col-span-5">
-                  <p className="text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-                <div className="md:col-span-3 flex flex-wrap gap-2">
-                  {service.tags.map((tag, tagIndex) => (
+              <div className="md:col-span-3 lg:col-span-2">
+                <p className="text-[10px] tracking-[0.15em] text-muted-foreground font-light leading-relaxed">
+                  {item.period}
+                </p>
+              </div>
+              <div className="md:col-span-9 lg:col-span-10">
+                <p className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase mb-2">
+                  {item.org}
+                </p>
+                <h3 className={`mb-4 ${isJp ? "text-lg font-normal" : "text-lg font-light tracking-wide"}`}>
+                  {item.role}
+                </h3>
+                <p className={`text-sm text-muted-foreground leading-[1.85] mb-5 ${isJp ? "font-light" : "font-light"}`}>
+                  {item.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {item.tags.map((tag, i) => (
                     <span
-                      key={tagIndex}
-                      className="text-xs px-3 py-1.5 border border-border text-muted-foreground"
+                      key={i}
+                      className="text-[10px] tracking-wider px-3 py-1 border border-border text-muted-foreground"
                     >
                       {tag}
                     </span>
@@ -242,104 +491,104 @@ function ServicesSection() {
               </div>
             </div>
           ))}
+          <div className="border-t border-border" />
         </div>
       </div>
     </section>
   )
 }
 
-// 実績データ
-const works = [
-  {
-    title: "Brand Movie",
-    category: "Video",
-    year: "2024",
-    image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&h=1000&fit=crop",
-  },
-  {
-    title: "E-Commerce Platform",
-    category: "Web",
-    year: "2024",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-  },
-  {
-    title: "Recruitment Film",
-    category: "Video",
-    year: "2023",
-    image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=800&h=800&fit=crop",
-  },
-  {
-    title: "Booking System",
-    category: "Web",
-    year: "2023",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-  },
-  {
-    title: "Product Showcase",
-    category: "Video",
-    year: "2023",
-    image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&h=1000&fit=crop",
-  },
-  {
-    title: "CX Optimization",
-    category: "Strategy",
-    year: "2024",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
-  },
-]
+// ─── Services ─────────────────────────────────────────────────────────────────
 
-function WorksSection() {
+function ServicesSection({ lang }: { lang: Lang }) {
+  const t = content[lang].services
+  const isJp = lang === "jp"
+
   return (
-    <section id="works" className="py-32 px-6 md:px-12 lg:px-16 bg-card">
-      <div className="max-w-7xl mx-auto">
-        {/* ヘッダー */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20">
-          <div>
-            <p className="text-xs tracking-[0.3em] text-muted-foreground uppercase mb-4">
-              Selected Works
-            </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight">
-              Projects
-            </h2>
-          </div>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-sm hover-line"
-          >
-            View All Projects
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
-        </div>
+    <section id="services" className="py-28 md:py-36 px-6 md:px-12 lg:px-16">
+      <div className="max-w-5xl mx-auto">
+        <header className="mb-16 md:mb-20">
+          <p className="text-[10px] tracking-[0.45em] text-muted-foreground uppercase mb-5">
+            {t.label}
+          </p>
+          <h2 className={`tracking-tight ${isJp ? "text-4xl md:text-5xl font-light" : "text-4xl md:text-5xl font-extralight"}`}>
+            {t.title}
+          </h2>
+        </header>
 
-        {/* グリッド */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-          {works.map((work, index) => (
+        <div>
+          {t.items.map((service, index) => (
             <div
               key={index}
-              className="group cursor-pointer"
+              className="border-t border-border py-12 md:py-16 group"
             >
-              <div className="relative overflow-hidden bg-muted aspect-[4/3]">
-                <img
-                  src={work.image}
-                  alt={work.title}
-                  className="w-full h-full object-cover img-scale"
-                  loading="lazy"
-                />
-              </div>
-              <div className="mt-4 flex justify-between items-start">
-                <div>
-                  <h3 className="text-lg font-medium tracking-tight group-hover:text-muted-foreground transition-colors">
-                    {work.title}
+              <div className="grid md:grid-cols-12 gap-6 md:gap-10 items-start">
+                <div className="md:col-span-1">
+                  <span className="text-[10px] tracking-[0.2em] text-muted-foreground">
+                    {service.number}
+                  </span>
+                </div>
+                <div className="md:col-span-3">
+                  <h3 className={`mb-1 group-hover:text-muted-foreground transition-colors duration-300 ${
+                    isJp ? "text-xl font-normal" : "text-xl font-light tracking-wide"
+                  }`}>
+                    {service.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {work.category}
+                  <p className="text-[10px] text-muted-foreground tracking-[0.15em]">
+                    {service.subtitle}
                   </p>
                 </div>
-                <span className="text-xs text-muted-foreground">
-                  {work.year}
-                </span>
+                <div className="md:col-span-5">
+                  <p className="text-sm text-muted-foreground leading-[1.85] font-light">
+                    {service.description}
+                  </p>
+                </div>
+                <div className="md:col-span-3 flex flex-wrap gap-2">
+                  {service.tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className="text-[10px] tracking-wider px-3 py-1 border border-border text-muted-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
+          ))}
+          <div className="border-t border-border" />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Tools ────────────────────────────────────────────────────────────────────
+
+function ToolsSection({ lang }: { lang: Lang }) {
+  const t = content[lang].tools
+  const isJp = lang === "jp"
+
+  return (
+    <section id="tools" className="py-28 md:py-36 px-6 md:px-12 lg:px-16 bg-card">
+      <div className="max-w-5xl mx-auto">
+        <header className="mb-16 md:mb-20">
+          <p className="text-[10px] tracking-[0.45em] text-muted-foreground uppercase mb-5">
+            {t.label}
+          </p>
+          <h2 className={`tracking-tight ${isJp ? "text-4xl md:text-5xl font-light" : "text-4xl md:text-5xl font-extralight"}`}>
+            {t.title}
+          </h2>
+        </header>
+
+        <div className="flex flex-wrap gap-3">
+          {toolsList.map((tool, i) => (
+            <span
+              key={i}
+              className="text-xs tracking-wider px-4 py-2 border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors duration-200"
+            >
+              {tool}
+            </span>
           ))}
         </div>
       </div>
@@ -347,57 +596,70 @@ function WorksSection() {
   )
 }
 
-// フッター / お問い合わせ
-function Footer() {
+// ─── Contact / Footer ─────────────────────────────────────────────────────────
+
+function Footer({ lang }: { lang: Lang }) {
+  const tc = content[lang].contact
+  const tf = content[lang].footer
+  const isJp = lang === "jp"
+
   return (
-    <footer id="contact" className="py-32 px-6 md:px-12 lg:px-16">
-      <div className="max-w-7xl mx-auto">
-        {/* CTA */}
-        <div className="mb-32">
-          <p className="text-xs tracking-[0.3em] text-muted-foreground uppercase mb-8">
-            Contact
+    <footer id="contact" className="py-28 md:py-36 px-6 md:px-12 lg:px-16">
+      <div className="max-w-5xl mx-auto">
+        {/* CTA block */}
+        <div className="mb-28 md:mb-32">
+          <p className="text-[10px] tracking-[0.45em] text-muted-foreground uppercase mb-12">
+            {tc.label}
           </p>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight mb-12 max-w-4xl leading-[1.1]">
-            プロジェクトの
-            <br />
-            ご相談はこちら
-          </h2>
-          <a
-            href="mailto:contact@example.com"
-            className="inline-flex items-center gap-3 bg-foreground text-background px-8 py-4 text-sm font-medium hover:opacity-80 transition-opacity"
+          <h2
+            className={`leading-[1.2] tracking-tight mb-10 ${
+              isJp
+                ? "text-4xl md:text-6xl lg:text-7xl font-light"
+                : "text-[clamp(2.8rem,5.5vw,5rem)] font-extralight"
+            }`}
           >
-            contact@example.com
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
+            {tc.lines[0]}
+            <br />
+            {tc.lines[1]}
+          </h2>
+
+          <div className="space-y-5">
+            <a
+              href={`mailto:${tc.email}`}
+              className="inline-flex items-center gap-3 text-sm font-light tracking-wider hover:opacity-55 transition-opacity duration-300"
+            >
+              {tc.email}
+              <ArrowUpRight className="w-4 h-4 shrink-0" />
+            </a>
+            <p className="text-[10px] tracking-[0.2em] text-muted-foreground">
+              {tc.tagline}
+            </p>
+          </div>
         </div>
 
-        {/* ボトム */}
+        {/* Footer bottom */}
         <div className="border-t border-border pt-8">
-          <div className="grid md:grid-cols-3 gap-8 items-center">
-            <p className="text-2xl font-black tracking-tight">
-              STUDIO M
-            </p>
-            <div className="flex items-center gap-6 md:justify-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <p className="text-xs font-light tracking-[0.3em]">STUDIO M</p>
+            <div className="flex items-center gap-6">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors text-sm hover-line"
+                className="text-[10px] tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors hover-line"
               >
-                Instagram
+                INSTAGRAM
               </a>
               <a
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors text-sm hover-line"
+                className="text-[10px] tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors hover-line"
               >
-                GitHub
+                GITHUB
               </a>
             </div>
-            <p className="text-xs text-muted-foreground md:text-right">
-              © 2026 Maki
-            </p>
+            <p className="text-[10px] text-muted-foreground tracking-wider">{tf.copy}</p>
           </div>
         </div>
       </div>
@@ -405,18 +667,21 @@ function Footer() {
   )
 }
 
-// メインページ
+// ─── Page root ────────────────────────────────────────────────────────────────
+
 export default function PortfolioPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [lang, setLang] = useState<Lang>("en")
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <Header onMenuOpen={() => setIsSidebarOpen(true)} />
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      <HeroSection />
-      <ServicesSection />
-      <WorksSection />
-      <Footer />
+    <main className={`min-h-screen bg-background text-foreground ${lang === "jp" ? "lang-jp" : "lang-en"}`}>
+      <Header lang={lang} setLang={setLang} onMenuOpen={() => setMobileOpen(true)} />
+      <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} lang={lang} setLang={setLang} />
+      <HeroSection lang={lang} />
+      <TimelineSection lang={lang} />
+      <ServicesSection lang={lang} />
+      <ToolsSection lang={lang} />
+      <Footer lang={lang} />
     </main>
   )
 }

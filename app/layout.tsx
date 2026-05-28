@@ -1,33 +1,31 @@
 import type { Metadata } from 'next'
-import { Noto_Sans_JP } from 'next/font/google'
+import { Inter, Noto_Sans_JP } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
-const notoSansJP = Noto_Sans_JP({ 
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '700', '900'],
-  variable: '--font-sans'
+  weight: ['300', '400', '500'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ['latin'],
+  weight: ['300', '400', '500'],
+  variable: '--font-noto',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'STUDIO K | WEB制作・映像制作・CX運用',
-  description: '言葉と映像で、本質を伝える。WEB開発、映像制作、CX運用改善を通じて、ビジネスの価値を最大化します。',
-  generator: 'v0.app',
+  title: 'STUDIO M | Business Strategy × Technology',
+  description: 'Intersecting Business Strategy and Technology to Solve Corporate Challenges End-to-End.',
   icons: {
     icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
+      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
+      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
     ],
     apple: '/apple-icon.png',
   },
@@ -39,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ja" className="bg-background" suppressHydrationWarning>
-      <body className={`${notoSansJP.variable} font-sans antialiased`}>
+    <html lang="en" className="bg-background" suppressHydrationWarning>
+      <body className={`${inter.variable} ${notoSansJP.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

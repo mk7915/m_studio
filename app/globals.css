@@ -4,7 +4,6 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* ライトモード - クリーンな白ベース */
   --background: oklch(0.99 0 0);
   --foreground: oklch(0.09 0 0);
   --card: oklch(0.97 0 0);
@@ -21,7 +20,7 @@
   --accent-foreground: oklch(0.99 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0 0);
+  --border: oklch(0.88 0 0);
   --input: oklch(0.95 0 0);
   --ring: oklch(0.09 0 0);
   --chart-1: oklch(0.09 0 0);
@@ -36,49 +35,49 @@
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.95 0 0);
   --sidebar-accent-foreground: oklch(0.09 0 0);
-  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-border: oklch(0.88 0 0);
   --sidebar-ring: oklch(0.09 0 0);
 }
 
 .dark {
-  /* 漆黒ダークモード - 白のみアクセント */
   --background: oklch(0 0 0);
-  --foreground: oklch(0.98 0 0);
-  --card: oklch(0.06 0 0);
-  --card-foreground: oklch(0.98 0 0);
+  --foreground: oklch(0.97 0 0);
+  --card: oklch(0.05 0 0);
+  --card-foreground: oklch(0.97 0 0);
   --popover: oklch(0.04 0 0);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.98 0 0);
+  --popover-foreground: oklch(0.97 0 0);
+  --primary: oklch(0.97 0 0);
   --primary-foreground: oklch(0 0 0);
-  --secondary: oklch(0.12 0 0);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.15 0 0);
-  --muted-foreground: oklch(0.55 0 0);
-  --accent: oklch(0.98 0 0);
+  --secondary: oklch(0.10 0 0);
+  --secondary-foreground: oklch(0.97 0 0);
+  --muted: oklch(0.13 0 0);
+  --muted-foreground: oklch(0.50 0 0);
+  --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.18 0 0);
-  --input: oklch(0.12 0 0);
-  --ring: oklch(0.98 0 0);
-  --chart-1: oklch(0.98 0 0);
+  --border: oklch(0.16 0 0);
+  --input: oklch(0.10 0 0);
+  --ring: oklch(0.97 0 0);
+  --chart-1: oklch(0.97 0 0);
   --chart-2: oklch(0.7 0 0);
   --chart-3: oklch(0.5 0 0);
   --chart-4: oklch(0.3 0 0);
-  --chart-5: oklch(0.15 0 0);
+  --chart-5: oklch(0.13 0 0);
   --sidebar: oklch(0.04 0 0);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(0.97 0 0);
+  --sidebar-primary: oklch(0.97 0 0);
   --sidebar-primary-foreground: oklch(0 0 0);
-  --sidebar-accent: oklch(0.12 0 0);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.18 0 0);
-  --sidebar-ring: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.10 0 0);
+  --sidebar-accent-foreground: oklch(0.97 0 0);
+  --sidebar-border: oklch(0.16 0 0);
+  --sidebar-ring: oklch(0.97 0 0);
 }
 
 @theme inline {
-  --font-sans: 'Noto Sans JP', 'Geist', sans-serif;
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-sans: var(--font-inter), 'Inter', sans-serif;
+  --font-jp: var(--font-noto), 'Noto Sans JP', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -126,12 +125,21 @@
   }
 }
 
-/* スムーススクロール */
+/* Font switching by language mode */
+.lang-en {
+  font-family: var(--font-inter), 'Inter', sans-serif;
+}
+
+.lang-jp {
+  font-family: var(--font-noto), 'Noto Sans JP', sans-serif;
+}
+
+/* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
-/* ホバーライン */
+/* Hover underline effect */
 .hover-line {
   position: relative;
 }
@@ -144,32 +152,18 @@ html {
   width: 0;
   height: 1px;
   background: currentColor;
-  transition: width 0.3s ease;
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .hover-line:hover::after {
   width: 100%;
 }
 
-/* テキストリビール */
-@keyframes reveal {
-  from {
-    clip-path: inset(0 100% 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-.animate-reveal {
-  animation: reveal 0.8s ease-out forwards;
-}
-
-/* フェードイン */
+/* Fade in */
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -178,14 +172,27 @@ html {
 }
 
 .animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
+  animation: fade-in 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-/* イメージスケール */
+/* Image scale on hover */
 .img-scale {
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .group:hover .img-scale {
-  transform: scale(1.05);
+  transform: scale(1.04);
+}
+
+/* Grain texture overlay for premium feel */
+.grain::before {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.022;
+  pointer-events: none;
+  z-index: 9999;
 }
