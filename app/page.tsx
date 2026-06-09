@@ -123,7 +123,7 @@ const content = {
     nav: { works: "実績", timeline: "キャリア", services: "サービス", contact: "お問い合わせ" },
     hero: {
       kicker: "OPERATIONS × IMAGINATION",
-      lines: ["WORKFLOW", "VIDEO", "INTERFACES"],
+      lines: ["WORKFLOWS.", "VIDEOS.", "INTERFACES."],
       tagline: "無駄のない自動化の仕組みと、心を動かす映像をゼロからデザインする。",
       cta: "お問い合わせ",
       cards: {
