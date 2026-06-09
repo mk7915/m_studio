@@ -14,7 +14,7 @@ const content = {
     nav: { works: "WORKS", timeline: "TIMELINE", services: "SERVICES", contact: "CONTACT" },
     hero: {
       kicker: "OPERATIONS × IMAGINATION",
-      lines: ["WORKFLOW ·", "VIDEO ·", "INTERFACES"],
+      lines: ["WORKFLOW", "VIDEO", "INTERFACES"],
       tagline: "Designing seamless automation and cinematic stories from scratch.",
       cta: "Get in Touch",
       cards: {
@@ -123,7 +123,7 @@ const content = {
     nav: { works: "実績", timeline: "キャリア", services: "サービス", contact: "お問い合わせ" },
     hero: {
       kicker: "OPERATIONS × IMAGINATION",
-      lines: ["WORKFLOW ·", "VIDEO ·", "INTERFACES"],
+      lines: ["WORKFLOW", "VIDEO", "INTERFACES"],
       tagline: "無駄のない自動化の仕組みと、心を動かす映像をゼロからデザインする。",
       cta: "お問い合わせ",
       cards: {
@@ -623,11 +623,7 @@ function HeroSection({ lang }: { lang: Lang }) {
 
           <div className="my-8">
             <h1
-              className={`leading-[1.05] mb-6 ${
-                isJp
-                  ? "text-4xl sm:text-5xl md:text-6xl font-black tracking-normal"
-                  : "font-display font-black tracking-tighter text-[clamp(3rem,7vw,6rem)]"
-              }`}
+              className="leading-[1.05] mb-6 font-display font-black tracking-tighter text-[clamp(3rem,7vw,6rem)]"
             >
               {t.lines.map((line, i) => (
                 <span key={i} className="block">
