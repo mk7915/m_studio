@@ -13,10 +13,9 @@ const content = {
   en: {
     nav: { works: "WORKS", timeline: "TIMELINE", services: "SERVICES", contact: "CONTACT" },
     hero: {
-      kicker: "Strategy × Technology · Asia",
-      lines: ["AI CX ·", "Video Creator ·", "Developer"],
-      tagline:
-        "Intersecting business strategy and technology to solve corporate challenges end-to-end.",
+      kicker: "OPERATIONS × IMAGINATION",
+      lines: ["WORKFLOW ·", "VIDEO ·", "INTERFACES"],
+      tagline: "Designing seamless automation and cinematic stories from scratch.",
       cta: "Get in Touch",
       cards: {
         status:   { label: "STATUS",    value: "Available",      sub: "Open to projects" },
@@ -123,9 +122,9 @@ const content = {
   jp: {
     nav: { works: "実績", timeline: "キャリア", services: "サービス", contact: "お問い合わせ" },
     hero: {
-      kicker: "戦略 × テクノロジー · アジア",
-      lines: ["AI CX /", "映像クリエイター /", "デベロッパー"],
-      tagline: "ビジネス戦略とテクノロジーを融合し、クライアントの課題を包括的に解決する。",
+      kicker: "OPERATIONS × IMAGINATION",
+      lines: ["WORKFLOW ·", "VIDEO ·", "INTERFACES"],
+      tagline: "無駄のない自動化の仕組みと、心を動かす映像をゼロからデザインする。",
       cta: "お問い合わせ",
       cards: {
         status:   { label: "ステータス", value: "受付中",         sub: "案件お受けします" },
