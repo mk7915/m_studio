@@ -33,6 +33,7 @@
   --mustard:     oklch(0.78 0.12  82);
   --surf-blue:   oklch(0.64 0.06  225);
   --sand-deep:   oklch(0.91 0.015 82);
+  --ocean:       oklch(0.22 0.09  235);  /* deep California navy */
 }
 
 .dark {
@@ -60,6 +61,7 @@
   --mustard:     oklch(0.72 0.10  82);
   --surf-blue:   oklch(0.62 0.07  220);
   --sand-deep:   oklch(0.22 0.03  65);
+  --ocean:       oklch(0.90 0.02  232);  /* warm cream-blue for dark mode */
 }
 
 @theme inline {
@@ -95,6 +97,7 @@
   --color-mustard:     var(--mustard);
   --color-surf-blue:   var(--surf-blue);
   --color-sand-deep:   var(--sand-deep);
+  --color-ocean:       var(--ocean);
 
   /* Radius scale */
   --radius-sm:   calc(var(--radius) - 6px);

@@ -467,6 +467,144 @@ function Header({
   )
 }
 
+// ─── Studio Hero — Giant STUDIO M with cursor-tracking image popup ────────────
+
+const HOVER_IMAGES = {
+  studio: [
+    "https://picsum.photos/seed/studio1/400/260",
+    "https://picsum.photos/seed/creative/400/260",
+    "https://picsum.photos/seed/workspace/400/260",
+  ],
+  m: [
+    "https://picsum.photos/seed/california/400/260",
+    "https://picsum.photos/seed/ocean/400/260",
+    "https://picsum.photos/seed/design/400/260",
+  ],
+} as const
+
+function StudioHeroSection({ lang }: { lang: Lang }) {
+  const sectionRef = useRef<HTMLElement>(null)
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const [popup, setPopup] = useState({ visible: false, src: "", rotation: -3 })
+  const [isTouch, setIsTouch] = useState(true) // SSR-safe default: start as touch
+
+  // Detect pointer capability after mount
+  useEffect(() => {
+    setIsTouch(!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
+  }, [])
+
+  // Track mouse position within the section (desktop only)
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el || isTouch) return
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+    }
+    el.addEventListener("mousemove", onMove, { passive: true })
+    return () => el.removeEventListener("mousemove", onMove)
+  }, [isTouch])
+
+  const showPopup = (zone: "studio" | "m", rotation: number) => {
+    if (isTouch) return
+    const pool = HOVER_IMAGES[zone]
+    setPopup({ visible: true, src: pool[Math.floor(Math.random() * pool.length)], rotation })
+  }
+
+  const hidePopup = () => setPopup((p) => ({ ...p, visible: false }))
+
+  // Mobile: tap to preview image for 2.5 s
+  const tapPreview = (zone: "studio" | "m") => {
+    if (!isTouch) return
+    const pool = HOVER_IMAGES[zone]
+    setPopup({ visible: true, src: pool[Math.floor(Math.random() * pool.length)], rotation: 0 })
+    setTimeout(() => setPopup((p) => ({ ...p, visible: false })), 2500)
+  }
+
+  const isJp = lang === "jp"
+  const subcopy = isJp
+    ? "ようこそ — 信頼できるクリエイティブパートナー ✌️"
+    : "Howdy — meet your trusted creative partner ✌️"
+
+  // Clamp image Y so it doesn't bleed into the fixed header
+  const imgY = Math.max(pos.y - 220, 72)
+
+  return (
+    <section
+      ref={sectionRef}
+      id="studio-hero"
+      className={`relative px-5 sm:px-8 lg:px-10 pt-8 pb-2 ${!isTouch ? "cursor-crosshair" : ""}`}
+    >
+      {/* Sub-copy */}
+      <p
+        className={`font-hint text-base md:text-lg italic text-muted-foreground/70 mb-1 select-none ${
+          isJp ? "tracking-wide" : ""
+        }`}
+      >
+        {subcopy}
+      </p>
+
+      {/* Giant headline */}
+      <h1 className="select-none" style={{ lineHeight: "0.88" }} aria-label="STUDIO M">
+        <span
+          role="presentation"
+          className={`block font-display font-black uppercase tracking-[-0.04em] text-ocean transition-colors duration-300 text-[clamp(3rem,15vw,15rem)] ${
+            !isTouch ? "hover:text-primary" : ""
+          }`}
+          onMouseEnter={() => showPopup("studio", -5)}
+          onMouseLeave={hidePopup}
+          onClick={() => tapPreview("studio")}
+        >
+          STUDIO
+        </span>
+        <span
+          role="presentation"
+          className={`block font-display font-black uppercase tracking-[-0.04em] text-ocean transition-colors duration-300 text-[clamp(5rem,52vw,52rem)] ${
+            !isTouch ? "hover:text-primary" : ""
+          }`}
+          onMouseEnter={() => showPopup("m", 4)}
+          onMouseLeave={hidePopup}
+          onClick={() => tapPreview("m")}
+        >
+          M
+        </span>
+      </h1>
+
+      {/* Floating image popup */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none"
+        style={{
+          position: "absolute",
+          left: isTouch ? "50%" : pos.x + 20,
+          top: isTouch ? "40%" : imgY,
+          width: 340,
+          zIndex: 45,
+          transform: isTouch
+            ? `translate(-50%,-50%) scale(${popup.visible ? 1 : 0.85})`
+            : `rotate(${popup.rotation}deg) scale(${popup.visible ? 1 : 0.85})`,
+          opacity: popup.visible ? 1 : 0,
+          transition: "opacity 0.4s ease, transform 0.45s cubic-bezier(0.34,1.15,0.64,1)",
+          willChange: "transform, opacity",
+        }}
+      >
+        {popup.src && (
+          <div className="rounded-2xl overflow-hidden shadow-[0_24px_64px_rgba(0,0,0,0.18)] ring-1 ring-black/8">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={popup.src}
+              alt=""
+              width={340}
+              height={216}
+              className="w-full h-[216px] object-cover block"
+            />
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
 // ─── Hero Section ─────────────────────────────────────────────────────────────
 
 function HeroSection({ lang }: { lang: Lang }) {
@@ -959,6 +1097,7 @@ export default function PortfolioPage() {
         setLang={setLang}
       />
       <div style={{ paddingTop: NAV_H }}>
+        <StudioHeroSection lang={lang} />
         <HeroSection   lang={lang} />
         <WorksSection  lang={lang} />
         <TimelineSection lang={lang} />
