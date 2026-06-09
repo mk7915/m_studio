@@ -65,11 +65,14 @@
 }
 
 @theme inline {
-  --font-sans:    var(--font-inter),       'Inter',         sans-serif;
-  --font-jp:      var(--font-noto),        'Noto Sans JP',  sans-serif;
-  --font-mono:    'Geist Mono',            monospace;
-  --font-display: var(--font-montserrat),  'Montserrat',    sans-serif;
-  --font-hint:    var(--font-caveat),      'Caveat',        cursive;
+  /* Noto Sans JP is stacked as a CJK fallback in both sans and display.
+     Latin glyphs always render via Inter/Montserrat; Japanese glyphs
+     fall through to Noto. This keeps the EN aesthetic in JP mode. */
+  --font-sans:    var(--font-inter),      'Inter',      var(--font-noto), 'Noto Sans JP', sans-serif;
+  --font-jp:      var(--font-noto),       'Noto Sans JP', sans-serif;
+  --font-mono:    'Geist Mono',           monospace;
+  --font-display: var(--font-montserrat), 'Montserrat', var(--font-noto), 'Noto Sans JP', sans-serif;
+  --font-hint:    var(--font-caveat),     'Caveat',     var(--font-noto), 'Noto Sans JP', cursive;
 
   /* Semantic color utilities */
   --color-background:              var(--background);
@@ -128,24 +131,23 @@ html {
 .lang-en { font-family: var(--font-inter), 'Inter', sans-serif; }
 
 .lang-jp {
-  font-family: var(--font-noto), 'Noto Sans JP', sans-serif;
-  word-break: keep-all;       /* prevent mid-word CJK breaks */
+  /* Do NOT override to Noto-only — that kills the EN aesthetic.
+     Inter handles Latin; Noto fills in CJK glyphs automatically. */
+  font-family: var(--font-inter), 'Inter', var(--font-noto), 'Noto Sans JP', sans-serif;
+  word-break: keep-all;
   overflow-wrap: break-word;
 }
 
-/* Japanese body text rhythm — wider letter-spacing + generous line-height */
+/* Japanese body copy rhythm — applies only to prose, not display headings */
 .lang-jp p,
 .lang-jp li {
-  letter-spacing: 0.06em;
-  line-height: 2;
+  font-family: var(--font-noto), 'Noto Sans JP', sans-serif; /* pure Noto for JP prose */
+  letter-spacing: 0.05em;
+  line-height: 1.9;
 }
 
-/* Japanese headings — tighten spacing for display-size text */
-.lang-jp h1,
-.lang-jp h2,
-.lang-jp h3 {
-  letter-spacing: 0.02em;
-}
+/* Display headings stay Montserrat regardless of language.
+   Removed letter-spacing override that was beating tracking-tighter (specificity 0,1,1 > 0,1,0). */
 
 /* ─── Scroll reveal ──────────────────────────────────────────────────────── */
 
