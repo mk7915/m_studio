@@ -124,8 +124,8 @@ const content = {
     nav: { works: "実績", timeline: "キャリア", services: "サービス", contact: "お問い合わせ" },
     hero: {
       kicker: "戦略 × テクノロジー · アジア",
-      lines: ["AI CX ·", "映像クリエイター ·", "開発者"],
-      tagline: "ビジネスの視点とテクノロジーを掛け合わせ、法人の課題をワンストップで解決する。",
+      lines: ["AI CX /", "映像クリエイター /", "デベロッパー"],
+      tagline: "ビジネス戦略とテクノロジーを融合し、クライアントの課題を包括的に解決する。",
       cta: "お問い合わせ",
       cards: {
         status:   { label: "ステータス", value: "受付中",         sub: "案件お受けします" },
@@ -138,7 +138,7 @@ const content = {
       items: [
         {
           id: "01", type: "cx" as const, year: "2024",
-          category: "CXアーキテクチャ",
+          category: "CXインフラ設計",
           title: "エンタープライズAI CXシステム",
           description:
             "エンタープライズAIトレーニングプラットフォームのCX/CSインフラを一気通貫で設計・構築。チケット解決時間40%短縮・NPS向上を実現。",
@@ -163,7 +163,7 @@ const content = {
         {
           id: "04", type: "cx" as const, year: "2023",
           category: "オペレーション",
-          title: "業務自動化スイート",
+          title: "業務プロセス自動化",
           description:
             "kintone + GASによるワークフロー自動化で、営業・サポート横断の手動作業を週15時間以上削減。",
           tags: ["kintone", "GAS", "データ分析"],
@@ -175,10 +175,10 @@ const content = {
       items: [
         {
           period: "2018 — 2023",
-          role: "採用コンサルタント · グローバル営業",
-          org: "国内外の企業",
+          role: "グローバルセールス / 採用コンサルタント",
+          org: "グローバルマーケット / 企業支援",
           description:
-            "国内外の企業にて国際商談・オペレーションを主導し、英語コミュニケーションを担当。約3年の海外経験を持ち、複数のマーケットでビジネスを展開。",
+            "国内外の企業において、商談やグローバルオペレーションを主導。約3年の海外拠点をベースとしたキャリアの中で、複数マーケットのビジネス拡大に貢献。",
           tags: ["国際ビジネス", "B2B営業", "採用支援"],
         },
         {
@@ -186,8 +186,8 @@ const content = {
           role: "独立フリーランス · アジア拠点",
           org: "AI · デジタル戦略領域",
           description:
-            "エンタープライズAIトレーニングプラットフォームのCX/CSアーキテクチャを主導し、ブランド動画マーケティングと独自Webアプリ開発を推進。",
-          tags: ["CXアーキテクチャ", "動画マーケティング", "Web開発"],
+            "エンタープライズAIプラットフォームにおけるCX/CSインフラの設計を主導。同時に、ブランディング動画のマーケティング戦略や、独自のWebアプリケーション開発を推進。",
+          tags: ["CXインフラ設計", "動画マーケティング", "Web開発"],
         },
       ],
     },
@@ -223,7 +223,7 @@ const content = {
       headline: ["次の課題を、", "共に解決しましょう。"],
       email: "contact@example.com",
       tagline: "フリーランス案件受付中 · アジア & リモート対応",
-      hint: "このボタンを押してプロジェクトをスタートしよう  =)",
+      hint: "Let's start your project! =)",
     },
     footer: { copy: "© 2026 Studio M" },
   },
@@ -523,7 +523,7 @@ function StudioHeroSection({ lang }: { lang: Lang }) {
 
   const isJp = lang === "jp"
   const subcopy = isJp
-    ? "ようこそ — 信頼できるクリエイティブパートナー"
+    ? "Creative Partner for Your Business"
     : "Howdy — meet your trusted creative partner"
 
   // Clamp image Y so it doesn't bleed into the fixed header
