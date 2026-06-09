@@ -122,7 +122,26 @@ html {
 /* ─── Font switching ─────────────────────────────────────────────────────── */
 
 .lang-en { font-family: var(--font-inter), 'Inter', sans-serif; }
-.lang-jp { font-family: var(--font-noto), 'Noto Sans JP', sans-serif; }
+
+.lang-jp {
+  font-family: var(--font-noto), 'Noto Sans JP', sans-serif;
+  word-break: keep-all;       /* prevent mid-word CJK breaks */
+  overflow-wrap: break-word;
+}
+
+/* Japanese body text rhythm — wider letter-spacing + generous line-height */
+.lang-jp p,
+.lang-jp li {
+  letter-spacing: 0.06em;
+  line-height: 2;
+}
+
+/* Japanese headings — tighten spacing for display-size text */
+.lang-jp h1,
+.lang-jp h2,
+.lang-jp h3 {
+  letter-spacing: 0.02em;
+}
 
 /* ─── Scroll reveal ──────────────────────────────────────────────────────── */
 

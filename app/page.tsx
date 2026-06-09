@@ -489,7 +489,7 @@ function HeroSection({ lang }: { lang: Lang }) {
             <h1
               className={`leading-[1.05] mb-6 ${
                 isJp
-                  ? "text-4xl sm:text-5xl md:text-6xl font-light"
+                  ? "text-4xl sm:text-5xl md:text-6xl font-black tracking-normal"
                   : "font-display font-black tracking-tighter text-[clamp(3rem,7vw,6rem)]"
               }`}
             >
@@ -501,7 +501,7 @@ function HeroSection({ lang }: { lang: Lang }) {
             </h1>
             <p
               className={`text-muted-foreground leading-relaxed max-w-md ${
-                isJp ? "text-sm font-light" : "text-[15px] font-light"
+                isJp ? "text-sm tracking-wide" : "text-[15px] font-light"
               }`}
             >
               {t.tagline}
@@ -691,7 +691,7 @@ function TimelineCard({
         <p className="text-[11px] text-primary font-semibold">{item.org}</p>
       </div>
       <div>
-        <h3 className={`font-bold mb-3 ${isJp ? "text-base" : "text-base tracking-wide"}`}>
+        <h3 className={`mb-3 ${isJp ? "text-base font-black tracking-normal" : "text-base font-bold tracking-wide"}`}>
           {item.role}
         </h3>
         <p className="text-[13px] text-muted-foreground leading-relaxed mb-4">{item.description}</p>
@@ -754,7 +754,7 @@ function ServiceCard({
         </div>
         <span className="text-[10px] tracking-widest text-muted-foreground">{svc.number}</span>
       </div>
-      <h3 className={`font-bold text-base mb-3 ${isJp ? "" : "tracking-wide"}`}>{svc.title}</h3>
+      <h3 className={`text-base mb-3 ${isJp ? "font-black tracking-normal" : "font-bold tracking-wide"}`}>{svc.title}</h3>
       <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{svc.description}</p>
       <div className="flex flex-wrap gap-1.5 mt-5">
         {svc.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
@@ -831,7 +831,7 @@ function Footer({ lang }: { lang: Lang }) {
           <h2
             className={`mt-6 mb-10 leading-[1.05] ${
               isJp
-                ? "text-4xl md:text-5xl lg:text-6xl font-light"
+                ? "text-4xl md:text-5xl lg:text-6xl font-black tracking-normal"
                 : "text-[clamp(2.6rem,5.5vw,5rem)] font-black tracking-tight"
             }`}
           >
