@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { ArrowUpRight, Menu, X, Play, Zap, Film, Monitor, MessageSquare, Code2 } from "lucide-react"
+import { ArrowUpRight, Menu, X, Play, Zap, Film, Monitor, MessageSquare, Code2, Instagram, Github } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 type Lang = "en" | "jp"
@@ -115,6 +115,7 @@ const content = {
       headline: ["Ready to solve", "your next challenge."],
       email: "contact@example.com",
       tagline: "Open to freelance · Asia & Remote",
+      hint: "Tap this 'tiny' button to start a project  =)",
     },
     footer: { copy: "© 2026 Studio M" },
   },
@@ -222,6 +223,7 @@ const content = {
       headline: ["次の課題を、", "共に解決しましょう。"],
       email: "contact@example.com",
       tagline: "フリーランス案件受付中 · アジア & リモート対応",
+      hint: "このボタンを押してプロジェクトをスタートしよう  =)",
     },
     footer: { copy: "© 2026 Studio M" },
   },
@@ -812,6 +814,16 @@ function ToolsSection({ lang }: { lang: Lang }) {
   )
 }
 
+// ─── Threads SVG Icon ────────────────────────────────────────────────────────
+
+function ThreadsIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 192 192" fill="white" aria-hidden="true">
+      <path d="M141.537 88.988c-.827-.394-1.667-.775-2.518-1.14-1.482-27.303-16.403-42.936-41.457-43.096h-.316c-14.986 0-27.449 6.396-35.12 18.036l13.779 9.452c5.73-8.695 14.724-10.549 21.347-10.549h.075c8.25.052 14.475 2.451 18.504 7.128 2.932 3.405 4.893 8.111 5.864 14.05-7.314-1.243-15.224-1.625-23.68-1.14-23.82 1.372-39.134 15.265-38.105 34.569.52 9.792 5.398 18.216 13.733 23.719 7.047 4.652 16.124 6.927 25.557 6.412 12.458-.683 22.231-5.436 29.049-14.127 5.178-6.6 8.453-15.153 9.899-25.93 5.937 3.583 10.337 8.298 12.767 13.966 4.132 9.635 4.373 25.468-8.546 38.376-11.319 11.308-24.925 16.2-45.487 16.351-22.81-.17-40.06-7.484-51.276-21.742C35.236 139.966 29.808 120.682 29.605 96c.203-24.682 5.631-43.966 16.132-57.317C56.954 24.425 74.204 17.11 97.013 16.94c22.975.17 40.526 7.521 52.171 21.847 5.71 7.026 10.015 15.861 12.853 26.162l16.147-4.308c-3.44-12.68-8.853-23.607-16.219-32.668-14.929-18.374-36.763-27.785-64.896-27.98H96.957C68.882.195 47.292 9.642 32.788 28.079 19.882 44.486 13.224 67.316 13.001 95.933L13 96l.001.068c.223 28.617 6.88 51.447 19.787 67.853 14.504 18.437 36.094 27.885 64.169 28.08h.112c25.96-.173 43.554-6.708 58.048-21.189 18.963-18.945 18.392-42.692 12.142-57.27-4.484-10.454-13.033-18.945-25.723-24.554Zm-43.097 40.52c-10.44.587-21.286-4.098-21.821-14.135-.396-7.442 5.296-15.745 22.462-16.735 1.966-.113 3.895-.168 5.79-.168 6.235 0 12.068.606 17.371 1.765-1.978 24.702-13.58 28.713-23.802 29.273Z" />
+    </svg>
+  )
+}
+
 // ─── Footer / Contact ─────────────────────────────────────────────────────────
 
 function Footer({ lang }: { lang: Lang }) {
@@ -821,58 +833,107 @@ function Footer({ lang }: { lang: Lang }) {
   const ref = useReveal()
 
   return (
-    <footer id="contact" className="px-4 lg:px-8 py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto">
-        <div
-          ref={ref}
-          className="reveal bento-card rounded-[2rem] bg-primary p-8 md:p-12 lg:p-16 text-primary-foreground"
-        >
-          <SectionLabel light>{tc.label}</SectionLabel>
-          <h2
-            className={`mt-6 mb-10 leading-[1.05] ${
-              isJp
-                ? "text-4xl md:text-5xl lg:text-6xl font-black tracking-normal"
-                : "text-[clamp(2.6rem,5.5vw,5rem)] font-black tracking-tight"
-            }`}
-          >
-            {tc.headline[0]}
-            <br />
-            {tc.headline[1]}
-          </h2>
+    <footer id="contact" className="px-4 lg:px-8 pt-8 pb-14 lg:pb-20">
+      <div className="max-w-5xl mx-auto flex flex-col items-center">
 
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        {/* Section label */}
+        <div className="mb-4">
+          <SectionLabel>{tc.label}</SectionLabel>
+        </div>
+
+        {/* Hint text — handwriting font */}
+        <p
+          className={`font-hint text-lg text-muted-foreground/60 italic mb-7 text-center ${
+            isJp ? "tracking-wide text-base" : ""
+          }`}
+        >
+          {tc.hint}
+        </p>
+
+        {/* ── Giant 3D Connect Button ── */}
+        <div ref={ref} className="reveal w-full mb-10">
+          <a
+            href={`mailto:${tc.email}`}
+            className={`
+              btn-connect block w-full rounded-[2rem] text-center cursor-pointer
+              bg-[#1a1a1a] text-white
+              dark:bg-[#f5f0e8] dark:text-[#1a1a1a]
+            `}
+          >
+            <span
+              className={`
+                block py-10 md:py-14 lg:py-16 px-6
+                font-black leading-none tracking-tighter
+                text-[clamp(3.5rem,12vw,9rem)]
+              `}
+            >
+              Connect
+            </span>
+          </a>
+        </div>
+
+        {/* ── Bottom nav bar ── */}
+        <div className="w-full max-w-3xl">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-muted/70 border border-border/50 rounded-2xl px-5 py-3.5 backdrop-blur-sm">
+
+            {/* Email */}
             <a
               href={`mailto:${tc.email}`}
-              className="inline-flex items-center gap-3 text-sm font-semibold hover:opacity-70 transition-opacity"
+              className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors"
             >
               {tc.email}
-              <ArrowUpRight className="w-4 h-4 shrink-0" />
+              <ArrowUpRight className="w-3 h-3 opacity-50" />
             </a>
-            <p className="text-[12px] text-primary-foreground/60">{tc.tagline}</p>
-          </div>
 
-          <div className="flex items-center justify-between mt-12 pt-8 border-t border-primary-foreground/20">
-            <div className="flex gap-6">
+            {/* SNS Icons */}
+            <div className="flex items-center gap-2.5">
+
+              {/* Instagram — gradient badge */}
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] tracking-widest uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors"
+                className="sns-icon-btn w-10 h-10 rounded-[14px]"
+                style={{
+                  background:
+                    "linear-gradient(135deg,#405de6 0%,#833ab4 30%,#e1306c 60%,#fd1d1d 80%,#fcaf45 100%)",
+                }}
+                aria-label="Instagram"
               >
-                Instagram
+                <Instagram className="w-[18px] h-[18px] text-white" />
               </a>
+
+              {/* Threads */}
+              <a
+                href="https://threads.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sns-icon-btn w-10 h-10 rounded-[14px] bg-[#101010]"
+                aria-label="Threads"
+              >
+                <ThreadsIcon size={18} />
+              </a>
+
+              {/* GitHub */}
               <a
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] tracking-widest uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors"
+                className="sns-icon-btn w-10 h-10 rounded-[14px] bg-[#24292e]"
+                aria-label="GitHub"
               >
-                GitHub
+                <Github className="w-[18px] h-[18px] text-white" />
               </a>
+
             </div>
-            <span className="text-[10px] text-primary-foreground/40 tracking-widest">{tf.copy}</span>
           </div>
+
+          {/* Copyright */}
+          <p className="text-center text-[10px] text-muted-foreground/50 mt-5 tracking-[0.25em] uppercase">
+            {tf.copy}
+          </p>
         </div>
+
       </div>
     </footer>
   )

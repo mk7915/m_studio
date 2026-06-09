@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Noto_Sans_JP, Montserrat } from 'next/font/google'
+import { Inter, Noto_Sans_JP, Montserrat, Caveat } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
@@ -15,6 +15,13 @@ const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['700', '800', '900'],
   variable: '--font-montserrat',
+  display: 'swap',
+})
+
+const caveat = Caveat({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-caveat',
   display: 'swap',
 })
 
@@ -43,7 +50,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="bg-background" suppressHydrationWarning>
-      <body className={`${inter.variable} ${notoSansJP.variable} ${montserrat.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${notoSansJP.variable} ${montserrat.variable} ${caveat.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
