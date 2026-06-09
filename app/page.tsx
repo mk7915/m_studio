@@ -466,229 +466,144 @@ function Header({
   )
 }
 
-// ─── Studio Hero — Giant STUDIO M with cursor-tracking image popup ────────────
+// ─── Palm Springs Modern Hero ─────────────────────────────────────────────────
 
-const HOVER_IMAGES = {
-  studio: [
-    "https://picsum.photos/seed/studio1/400/260",
-    "https://picsum.photos/seed/creative/400/260",
-    "https://picsum.photos/seed/workspace/400/260",
-  ],
-  m: [
-    "https://picsum.photos/seed/california/400/260",
-    "https://picsum.photos/seed/ocean/400/260",
-    "https://picsum.photos/seed/design/400/260",
-  ],
-} as const
+const PS_BG     = "#F4EFEA"
+const PS_TEXT   = "#4A5D4E"
+const PS_ACCENT = "#D9744B"
 
-function StudioHeroSection({ lang }: { lang: Lang }) {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [pos, setPos] = useState({ x: 0, y: 0 })
-  const [popup, setPopup] = useState({ visible: false, src: "", rotation: -3 })
-  const [isTouch, setIsTouch] = useState(true) // SSR-safe default: start as touch
-
-  // Detect pointer capability after mount
-  useEffect(() => {
-    setIsTouch(!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
-  }, [])
-
-  // Track mouse position within the section (desktop only)
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el || isTouch) return
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect()
-      setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top })
-    }
-    el.addEventListener("mousemove", onMove, { passive: true })
-    return () => el.removeEventListener("mousemove", onMove)
-  }, [isTouch])
-
-  const showPopup = (zone: "studio" | "m", rotation: number) => {
-    if (isTouch) return
-    const pool = HOVER_IMAGES[zone]
-    setPopup({ visible: true, src: pool[Math.floor(Math.random() * pool.length)], rotation })
-  }
-
-  const hidePopup = () => setPopup((p) => ({ ...p, visible: false }))
-
-  // Mobile: tap to preview image for 2.5 s
-  const tapPreview = (zone: "studio" | "m") => {
-    if (!isTouch) return
-    const pool = HOVER_IMAGES[zone]
-    setPopup({ visible: true, src: pool[Math.floor(Math.random() * pool.length)], rotation: 0 })
-    setTimeout(() => setPopup((p) => ({ ...p, visible: false })), 2500)
-  }
-
-  const isJp = lang === "jp"
-  const subcopy = isJp
-    ? "Creative Partner for Your Business"
-    : "Howdy — meet your trusted creative partner"
-
-  // Clamp image Y so it doesn't bleed into the fixed header
-  const imgY = Math.max(pos.y - 220, 72)
-
-  return (
-    <section
-      ref={sectionRef}
-      id="studio-hero"
-      className={`relative px-5 sm:px-8 lg:px-10 pt-8 pb-2 ${!isTouch ? "cursor-crosshair" : ""}`}
-    >
-      {/* Sub-copy */}
-      <p
-        className={`font-hint text-base md:text-lg italic text-muted-foreground/70 mb-1 select-none ${
-          isJp ? "tracking-wide" : ""
-        }`}
-      >
-        {subcopy}
-      </p>
-
-      {/* Giant headline */}
-      <h1 className="select-none leading-none font-display font-black uppercase tracking-[-0.04em] text-ocean text-[clamp(3rem,15vw,15rem)]" aria-label="STUDIO M">
-        <span
-          role="presentation"
-          className={`transition-colors duration-300 ${!isTouch ? "hover:text-primary" : ""}`}
-          onMouseEnter={() => showPopup("studio", -5)}
-          onMouseLeave={hidePopup}
-          onClick={() => tapPreview("studio")}
-        >
-          STUDIO
-        </span>
-        {" "}
-        <span
-          role="presentation"
-          className={`transition-colors duration-300 ${!isTouch ? "hover:text-primary" : ""}`}
-          onMouseEnter={() => showPopup("m", 4)}
-          onMouseLeave={hidePopup}
-          onClick={() => tapPreview("m")}
-        >
-          M
-        </span>
-      </h1>
-
-      {/* Floating image popup */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none"
-        style={{
-          position: "absolute",
-          left: isTouch ? "50%" : pos.x + 20,
-          top: isTouch ? "40%" : imgY,
-          width: 340,
-          zIndex: 45,
-          transform: isTouch
-            ? `translate(-50%,-50%) scale(${popup.visible ? 1 : 0.85})`
-            : `rotate(${popup.rotation}deg) scale(${popup.visible ? 1 : 0.85})`,
-          opacity: popup.visible ? 1 : 0,
-          transition: "opacity 0.4s ease, transform 0.45s cubic-bezier(0.34,1.15,0.64,1)",
-          willChange: "transform, opacity",
-        }}
-      >
-        {popup.src && (
-          <div className="rounded-2xl overflow-hidden shadow-[0_24px_64px_rgba(0,0,0,0.18)] ring-1 ring-black/8">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={popup.src}
-              alt=""
-              width={340}
-              height={216}
-              className="w-full h-[216px] object-cover block"
-            />
-          </div>
-        )}
-      </div>
-    </section>
-  )
-}
-
-// ─── Hero Section ─────────────────────────────────────────────────────────────
-
-function HeroSection({ lang }: { lang: Lang }) {
+function PalmSpringsHero({ lang }: { lang: Lang }) {
   const t = content[lang].hero
   const isJp = lang === "jp"
-  const ref = useReveal()
 
   return (
     <section
-      style={{ minHeight: `calc(100svh - ${NAV_H}px)` }}
-      className="flex items-center px-4 lg:px-8 pt-4 pb-8"
+      id="hero"
+      className="relative overflow-hidden"
+      style={{ minHeight: "100svh", background: PS_BG }}
     >
+      {/* ── Layer 2: Giant blurred background text ── */}
       <div
-        ref={ref}
-        className="reveal w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_210px] gap-4 lg:gap-5"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none select-none overflow-hidden"
       >
-        {/* ── Main hero card ── */}
-        <div className="bento-card rounded-[2rem] bg-card p-8 md:p-12 flex flex-col justify-between min-h-[420px] lg:min-h-[520px]">
-          <SectionLabel>{t.kicker}</SectionLabel>
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{
+            maskImage:
+              "linear-gradient(to bottom, transparent 5%, rgba(0,0,0,0.35) 38%, rgba(0,0,0,0.85) 68%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 5%, rgba(0,0,0,0.35) 38%, rgba(0,0,0,0.85) 68%)",
+          }}
+        >
+          <span
+            className="font-display font-black uppercase leading-none tracking-[-0.04em]"
+            style={{
+              fontSize: "clamp(9rem, 28vw, 34rem)",
+              color: PS_TEXT,
+              opacity: 0.1,
+              filter: "blur(2.5px)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            STUDIO&nbsp;M
+          </span>
+        </div>
+      </div>
 
-          <div className="my-8">
-            <h1
-              className="leading-[1.05] mb-6 font-display font-black tracking-tighter text-[clamp(3rem,7vw,6rem)]"
+      {/* ── Layer 3: Foreground content ── */}
+      <div
+        className="relative z-10 flex flex-col"
+        style={{ minHeight: "100svh" }}
+      >
+        {/* Spacer for fixed header */}
+        <div style={{ height: NAV_H }} />
+
+        {/* Main content — bottom-anchored for dramatic depth */}
+        <div className="flex-1 flex flex-col justify-end px-6 sm:px-10 lg:px-16 xl:px-20 pb-16 md:pb-24 lg:pb-28">
+          <div className="max-w-7xl mx-auto w-full">
+
+            {/* Kicker */}
+            <p
+              className="text-[10px] tracking-[0.45em] uppercase font-semibold mb-8 md:mb-10"
+              style={{ color: PS_TEXT, opacity: 0.5 }}
             >
+              {t.kicker}
+            </p>
+
+            {/* Main headline */}
+            <h1 className="font-display font-black mb-10 md:mb-14">
               {t.lines.map((line, i) => (
-                <span key={i} className="block">
+                <span
+                  key={i}
+                  className="block leading-[0.93] tracking-[-0.045em]"
+                  style={{
+                    fontSize: "clamp(3.2rem, 9vw, 8.5rem)",
+                    color: PS_TEXT,
+                  }}
+                >
                   {line}
                 </span>
               ))}
             </h1>
-            <p
-              className={`text-muted-foreground leading-relaxed max-w-md ${
-                isJp ? "text-sm tracking-wide" : "text-[15px] font-light"
-              }`}
-            >
-              {t.tagline}
-            </p>
-          </div>
 
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-[11px] tracking-[0.15em] font-semibold hover:bg-primary/90 transition-all duration-200"
-            >
-              {t.cta}
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
-            <a
-              href="#works"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-[11px] tracking-[0.15em] text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-all duration-200"
-            >
-              {content[lang].works.label}
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </div>
+            {/* Bottom row: tagline + CTAs + status */}
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 md:gap-12">
 
-        {/* ── Right info cards ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-5">
-          {/* Status */}
-          <div className="bento-card rounded-[1.5rem] bg-primary p-5 flex flex-col justify-between">
-            <SectionLabel light>{t.cards.status.label}</SectionLabel>
-            <div className="mt-3">
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary-foreground shrink-0" />
-                <span className="text-sm font-bold text-primary-foreground">{t.cards.status.value}</span>
+              {/* Left: tagline + buttons */}
+              <div>
+                <p
+                  className={`leading-relaxed max-w-[340px] mb-8 ${
+                    isJp ? "text-sm tracking-wide" : "text-[14.5px] font-light"
+                  }`}
+                  style={{ color: PS_TEXT, opacity: 0.65 }}
+                >
+                  {t.tagline}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-[11px] tracking-[0.18em] font-semibold text-white transition-all duration-200 hover:brightness-110 hover:-translate-y-px active:scale-[0.97]"
+                    style={{ background: PS_ACCENT }}
+                  >
+                    {t.cta}
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                  <a
+                    href="#works"
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-[11px] tracking-[0.18em] font-medium transition-all duration-200 hover:opacity-70 hover:-translate-y-px active:scale-[0.97]"
+                    style={{
+                      border: `1.5px solid ${PS_TEXT}`,
+                      color: PS_TEXT,
+                    }}
+                  >
+                    {content[lang].works.label}
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
               </div>
-              <p className="text-[11px] text-primary-foreground/65 mt-1">{t.cards.status.sub}</p>
+
+              {/* Right: availability status pill */}
+              <div
+                className="flex items-center gap-2.5 px-5 py-3 rounded-full shrink-0"
+                style={{
+                  background: `${PS_TEXT}0f`,
+                  border: `1px solid ${PS_TEXT}25`,
+                }}
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full shrink-0"
+                  style={{ background: PS_ACCENT }}
+                />
+                <span
+                  className="text-[11px] tracking-[0.18em] font-medium"
+                  style={{ color: PS_TEXT }}
+                >
+                  {t.cards.status.value}&nbsp;·&nbsp;{t.cards.location.value}
+                </span>
+              </div>
+
             </div>
-          </div>
-
-          {/* Location */}
-          <div className="bento-card rounded-[1.5rem] bg-surf-blue/20 p-5 flex flex-col justify-between">
-            <SectionLabel>{t.cards.location.label}</SectionLabel>
-            <p className="text-sm font-semibold mt-3">{t.cards.location.value}</p>
-          </div>
-
-          {/* Focus — desktop only */}
-          <div className="hidden lg:flex bento-card rounded-[1.5rem] bg-mustard/25 p-5 flex-col">
-            <SectionLabel>{t.cards.focus.label}</SectionLabel>
-            <ul className="mt-3 space-y-1.5">
-              {t.cards.focus.items.map((item, i) => (
-                <li key={i} className="text-[11px] font-medium flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-foreground/40 shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>
@@ -1089,8 +1004,7 @@ export default function PortfolioPage() {
         setLang={setLang}
       />
       <div style={{ paddingTop: NAV_H }}>
-        <StudioHeroSection lang={lang} />
-        <HeroSection   lang={lang} />
+        <PalmSpringsHero lang={lang} />
         <WorksSection  lang={lang} />
         <TimelineSection lang={lang} />
         <ServicesSection lang={lang} />
