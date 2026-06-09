@@ -523,8 +523,8 @@ function StudioHeroSection({ lang }: { lang: Lang }) {
 
   const isJp = lang === "jp"
   const subcopy = isJp
-    ? "ようこそ — 信頼できるクリエイティブパートナー ✌️"
-    : "Howdy — meet your trusted creative partner ✌️"
+    ? "ようこそ — 信頼できるクリエイティブパートナー"
+    : "Howdy — meet your trusted creative partner"
 
   // Clamp image Y so it doesn't bleed into the fixed header
   const imgY = Math.max(pos.y - 220, 72)
@@ -545,23 +545,20 @@ function StudioHeroSection({ lang }: { lang: Lang }) {
       </p>
 
       {/* Giant headline */}
-      <h1 className="select-none" style={{ lineHeight: "0.88" }} aria-label="STUDIO M">
+      <h1 className="select-none leading-none font-display font-black uppercase tracking-[-0.04em] text-ocean text-[clamp(3rem,15vw,15rem)]" aria-label="STUDIO M">
         <span
           role="presentation"
-          className={`block font-display font-black uppercase tracking-[-0.04em] text-ocean transition-colors duration-300 text-[clamp(3rem,15vw,15rem)] ${
-            !isTouch ? "hover:text-primary" : ""
-          }`}
+          className={`transition-colors duration-300 ${!isTouch ? "hover:text-primary" : ""}`}
           onMouseEnter={() => showPopup("studio", -5)}
           onMouseLeave={hidePopup}
           onClick={() => tapPreview("studio")}
         >
           STUDIO
         </span>
+        {" "}
         <span
           role="presentation"
-          className={`block font-display font-black uppercase tracking-[-0.04em] text-ocean transition-colors duration-300 text-[clamp(5rem,52vw,52rem)] ${
-            !isTouch ? "hover:text-primary" : ""
-          }`}
+          className={`transition-colors duration-300 ${!isTouch ? "hover:text-primary" : ""}`}
           onMouseEnter={() => showPopup("m", 4)}
           onMouseLeave={hidePopup}
           onClick={() => tapPreview("m")}
