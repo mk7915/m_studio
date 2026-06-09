@@ -1,41 +1,69 @@
 "use client"
 
-import { ArrowUpRight, Menu, X } from "lucide-react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import { ArrowUpRight, Menu, X, Play, Zap, Film, Monitor } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 type Lang = "en" | "jp"
+type IconName = "Zap" | "Film" | "Monitor"
 
-// ─── Content ──────────────────────────────────────────────────────────────────
+// ─── Bilingual Content ────────────────────────────────────────────────────────
 
 const content = {
   en: {
-    nav: {
-      timeline: "TIMELINE",
-      services: "SERVICES",
-      tools: "TOOLS",
-      contact: "CONTACT",
-    },
+    nav: { works: "WORKS", timeline: "TIMELINE", services: "SERVICES", contact: "CONTACT" },
     hero: {
       kicker: "Strategy × Technology · Asia",
-      headline:
-        "Intersecting Business Strategy and Technology to Solve Corporate Challenges End-to-End.",
+      lines: ["AI CX ·", "Video Creator ·", "Developer"],
+      tagline:
+        "Intersecting business strategy and technology to solve corporate challenges end-to-end.",
       cta: "Get in Touch",
-      scroll: "Scroll ↓",
-      caption: "Web · Video · CX · Strategy",
-      side: {
-        capabilities: {
-          label: "CAPABILITIES",
-          items: ["Web Development", "Video Production", "CX Architecture", "Strategy"],
-        },
-        location: { label: "LOCATION", value: "Asia / Remote" },
-        status: { label: "STATUS", value: "Available" },
+      cards: {
+        status:   { label: "STATUS",    value: "Available",      sub: "Open to projects" },
+        location: { label: "BASED IN",  value: "Asia / Remote" },
+        focus:    { label: "FOCUS",     items: ["CX Architecture", "Video Marketing", "Web Development", "Strategy"] },
       },
     },
+    works: {
+      label: "SELECTED WORKS",
+      count: "4 projects",
+      items: [
+        {
+          id: "01", type: "cx" as const, year: "2024",
+          category: "CX Architecture",
+          title: "Enterprise AI CX System",
+          description:
+            "Architected full-cycle CX/CS infrastructure for an enterprise AI training platform, reducing ticket resolution time by 40% and improving NPS across the entire support funnel.",
+          tags: ["kintone", "GAS", "Automation", "UX Design"],
+        },
+        {
+          id: "02", type: "video" as const, year: "2024",
+          category: "Video Production",
+          title: "Corporate Brand Film",
+          description:
+            "Multi-episode cinematic brand campaign driving 3× organic engagement growth for a global tech brand.",
+          tags: ["Premiere Pro", "After Effects", "Brand Direction"],
+        },
+        {
+          id: "03", type: "video" as const, year: "2023",
+          category: "Content Creation",
+          title: "Vertical SNS Series",
+          description:
+            "Monthly vertical video content strategy and production for a SaaS brand's social channels.",
+          tags: ["SNS Video", "After Effects", "Strategy"],
+        },
+        {
+          id: "04", type: "cx" as const, year: "2023",
+          category: "Operations",
+          title: "Automation Suite",
+          description:
+            "kintone + GAS workflows eliminating 15+ hours of manual operations per week across sales and support.",
+          tags: ["kintone", "GAS", "Analytics"],
+        },
+      ] as WorkItem[],
+    },
     timeline: {
-      label: "CAREER",
-      index: "02",
-      count: "2 entries",
+      label: "CAREER", count: "2 roles",
       items: [
         {
           period: "2018 — 2023",
@@ -56,80 +84,97 @@ const content = {
       ],
     },
     services: {
-      label: "CAPABILITIES",
-      index: "03",
-      count: "3 services",
+      label: "CAPABILITIES", count: "3 services",
       items: [
         {
-          number: "01",
+          number: "01", icon: "Zap" as IconName,
           title: "CX & Operations Architecture",
           description:
             "Optimizing user journeys, kintone ecosystem management, GAS automation, and spreadsheet data analytics.",
           tags: ["UX Journey Design", "kintone", "GAS Automation", "Data Analytics"],
         },
         {
-          number: "02",
+          number: "02", icon: "Film" as IconName,
           title: "Digital Content Creation",
           description:
-            "High-end corporate video production, cinematic editing using Adobe Premiere Pro / After Effects, and vertical SNS content optimization.",
+            "High-end corporate video production, cinematic editing using Premiere Pro / After Effects, and vertical SNS content optimization.",
           tags: ["Premiere Pro", "After Effects", "SNS Video", "Corporate Film"],
         },
         {
-          number: "03",
-          title: "Web Development & Engineering",
+          number: "03", icon: "Monitor" as IconName,
+          title: "Web Development",
           description:
             "Building scalable apps and systems using HTML5/CSS3, JavaScript, PHP, and Laravel 10.",
           tags: ["Laravel 10", "PHP", "JavaScript", "HTML5 / CSS3"],
         },
       ],
     },
-    tools: {
-      label: "TECH STACK",
-      index: "04",
-      count: "14 tools",
-    },
+    tools: { label: "TECH STACK", count: "14 tools" },
     contact: {
       label: "CONTACT",
-      index: "05",
       headline: ["Ready to solve", "your next challenge."],
       email: "contact@example.com",
       tagline: "Open to freelance · Asia & Remote",
-      avail_label: "AVAILABILITY",
     },
     footer: { copy: "© 2026 Studio M" },
   },
 
   jp: {
-    nav: {
-      timeline: "キャリア",
-      services: "サービス",
-      tools: "ツール",
-      contact: "お問い合わせ",
-    },
+    nav: { works: "実績", timeline: "キャリア", services: "サービス", contact: "お問い合わせ" },
     hero: {
-      kicker: "戦略 × テクノロジー・アジア",
-      headline:
-        "ビジネスの視点と、テクノロジーの技術を掛け合わせ、法人の課題をワンストップで解決する。",
+      kicker: "戦略 × テクノロジー · アジア",
+      lines: ["AI CX ·", "映像クリエイター ·", "開発者"],
+      tagline: "ビジネスの視点とテクノロジーを掛け合わせ、法人の課題をワンストップで解決する。",
       cta: "お問い合わせ",
-      scroll: "スクロール ↓",
-      caption: "Web · 映像 · CX · 戦略",
-      side: {
-        capabilities: {
-          label: "主要領域",
-          items: ["Web開発", "映像制作", "CX設計", "戦略立案"],
-        },
-        location: { label: "拠点", value: "アジア / リモート" },
-        status: { label: "ステータス", value: "案件受付中" },
+      cards: {
+        status:   { label: "ステータス", value: "受付中",         sub: "案件お受けします" },
+        location: { label: "拠点",       value: "アジア / リモート" },
+        focus:    { label: "専門領域",   items: ["CX設計", "動画マーケティング", "Web開発", "戦略立案"] },
       },
     },
+    works: {
+      label: "制作実績", count: "4件",
+      items: [
+        {
+          id: "01", type: "cx" as const, year: "2024",
+          category: "CXアーキテクチャ",
+          title: "エンタープライズAI CXシステム",
+          description:
+            "エンタープライズAIトレーニングプラットフォームのCX/CSインフラを一気通貫で設計・構築。チケット解決時間40%短縮・NPS向上を実現。",
+          tags: ["kintone", "GAS", "自動化", "UX設計"],
+        },
+        {
+          id: "02", type: "video" as const, year: "2024",
+          category: "映像制作",
+          title: "コーポレートブランドフィルム",
+          description:
+            "グローバルテック企業のマルチエピソード型ブランドキャンペーン。オーガニックエンゲージメント3倍増を達成。",
+          tags: ["Premiere Pro", "After Effects", "ブランド演出"],
+        },
+        {
+          id: "03", type: "video" as const, year: "2023",
+          category: "コンテンツ制作",
+          title: "縦型SNSシリーズ",
+          description:
+            "SaaSブランドのSNSチャンネル向け、月次縦型映像コンテンツの戦略策定から制作まで一貫担当。",
+          tags: ["SNS動画", "After Effects", "コンテンツ戦略"],
+        },
+        {
+          id: "04", type: "cx" as const, year: "2023",
+          category: "オペレーション",
+          title: "業務自動化スイート",
+          description:
+            "kintone + GASによるワークフロー自動化で、営業・サポート横断の手動作業を週15時間以上削減。",
+          tags: ["kintone", "GAS", "データ分析"],
+        },
+      ] as WorkItem[],
+    },
     timeline: {
-      label: "キャリア",
-      index: "02",
-      count: "2件",
+      label: "キャリア", count: "2件",
       items: [
         {
           period: "2018 — 2023",
-          role: "採用コンサルタント・グローバル営業",
+          role: "採用コンサルタント · グローバル営業",
           org: "国内外の企業",
           description:
             "国内外の企業にて国際商談・オペレーションを主導し、英語コミュニケーションを担当。約3年の海外経験を持ち、複数のマーケットでビジネスを展開。",
@@ -137,35 +182,33 @@ const content = {
         },
         {
           period: "2023 — 現在",
-          role: "独立フリーランス・アジア拠点",
-          org: "AI・デジタル戦略領域",
+          role: "独立フリーランス · アジア拠点",
+          org: "AI · デジタル戦略領域",
           description:
-            "エンタープライズAIトレーニングプラットフォームのCX/CSアーキテクチャを主導し、ブランド動画マーケティングと独自Webアプリケーション開発を推進。",
+            "エンタープライズAIトレーニングプラットフォームのCX/CSアーキテクチャを主導し、ブランド動画マーケティングと独自Webアプリ開発を推進。",
           tags: ["CXアーキテクチャ", "動画マーケティング", "Web開発"],
         },
       ],
     },
     services: {
-      label: "サービス",
-      index: "03",
-      count: "3サービス",
+      label: "サービス", count: "3サービス",
       items: [
         {
-          number: "01",
+          number: "01", icon: "Zap" as IconName,
           title: "CX & オペレーション設計",
           description:
             "ユーザージャーニー最適化、kintoneエコシステム管理、GAS自動化、スプレッドシートデータ分析。",
           tags: ["UXジャーニー設計", "kintone", "GAS自動化", "データ分析"],
         },
         {
-          number: "02",
+          number: "02", icon: "Film" as IconName,
           title: "デジタルコンテンツ制作",
           description:
             "ハイエンド企業動画制作、Adobe Premiere Pro / After Effectsによる映像編集、SNS縦型コンテンツ最適化。",
           tags: ["Premiere Pro", "After Effects", "SNS動画", "企業PV"],
         },
         {
-          number: "03",
+          number: "03", icon: "Monitor" as IconName,
           title: "Web開発 & エンジニアリング",
           description:
             "HTML5/CSS3、JavaScript、PHP、Laravel 10を用いたスケーラブルなアプリケーション・システム構築。",
@@ -173,55 +216,81 @@ const content = {
         },
       ],
     },
-    tools: {
-      label: "技術スタック",
-      index: "04",
-      count: "14ツール",
-    },
+    tools: { label: "技術スタック", count: "14ツール" },
     contact: {
       label: "お問い合わせ",
-      index: "05",
       headline: ["次の課題を、", "共に解決しましょう。"],
       email: "contact@example.com",
-      tagline: "フリーランス案件受付中・アジア & リモート対応",
-      avail_label: "受付状況",
+      tagline: "フリーランス案件受付中 · アジア & リモート対応",
     },
     footer: { copy: "© 2026 Studio M" },
   },
 } as const
 
+type WorkItem = {
+  id: string
+  type: "cx" | "video"
+  year: string
+  category: string
+  title: string
+  description: string
+  tags: readonly string[]
+}
+
 const toolsList = [
-  "Laravel 10",
-  "PHP",
-  "JavaScript",
-  "HTML5 / CSS3",
-  "Google Apps Script",
-  "kintone",
-  "Adobe Premiere Pro",
-  "After Effects",
-  "Canva",
-  "Slack",
-  "Discord",
-  "Microsoft Teams",
-  "Zoom",
-  "Spreadsheet Analytics",
+  "Laravel 10", "PHP", "JavaScript", "HTML5 / CSS3",
+  "Google Apps Script", "kintone", "Adobe Premiere Pro",
+  "After Effects", "Canva", "Slack", "Discord",
+  "Microsoft Teams", "Zoom", "Spreadsheet Analytics",
 ]
 
-// ─── Shared primitives ────────────────────────────────────────────────────────
+const NAV_H = 60
 
-/** Tiny uppercase section label */
-function Label({ children }: { children: React.ReactNode }) {
+// ─── Scroll reveal hook ───────────────────────────────────────────────────────
+
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          el.classList.add("visible")
+          obs.unobserve(el)
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  return ref
+}
+
+// ─── Primitives ───────────────────────────────────────────────────────────────
+
+function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="text-[9px] tracking-[0.35em] text-muted-foreground uppercase select-none">
+    <span className="text-[10px] tracking-wide px-2.5 py-1 rounded-full border border-border text-muted-foreground">
       {children}
     </span>
   )
 }
 
-/** Tag pill — adapts colour inside hover-inverted cells */
-function Tag({ children }: { children: React.ReactNode }) {
+function SectionLabel({
+  children,
+  light = false,
+}: {
+  children: React.ReactNode
+  light?: boolean
+}) {
   return (
-    <span className="text-[9px] tracking-[0.08em] px-2.5 py-1 border border-border group-hover:border-primary/20 text-muted-foreground group-hover:text-primary/60 transition-colors">
+    <span
+      className={`text-[10px] tracking-[0.32em] uppercase font-semibold ${
+        light ? "text-primary-foreground/60" : "text-primary"
+      }`}
+    >
       {children}
     </span>
   )
@@ -231,121 +300,91 @@ function Tag({ children }: { children: React.ReactNode }) {
 
 function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   return (
-    <>
-      <button
-        onClick={() => setLang("en")}
-        aria-pressed={lang === "en"}
-        className={`flex items-center px-4 h-full border-r border-border text-[10px] tracking-[0.2em] transition-colors duration-150 ${
-          lang === "en"
-            ? "bg-foreground text-background"
-            : "text-muted-foreground hover:text-foreground hover:bg-muted"
-        }`}
-      >
-        EN
-      </button>
-      <button
-        onClick={() => setLang("jp")}
-        aria-pressed={lang === "jp"}
-        className={`flex items-center px-4 h-full text-[10px] tracking-[0.2em] transition-colors duration-150 ${
-          lang === "jp"
-            ? "bg-foreground text-background"
-            : "text-muted-foreground hover:text-foreground hover:bg-muted"
-        }`}
-      >
-        JP
-      </button>
-    </>
+    <div className="flex items-center gap-0.5 bg-muted rounded-full p-0.5">
+      {(["en", "jp"] as Lang[]).map((l) => (
+        <button
+          key={l}
+          onClick={() => setLang(l)}
+          aria-pressed={lang === l}
+          className={`px-3 py-1.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-semibold transition-all duration-200 ${
+            lang === l
+              ? "bg-background text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </div>
   )
 }
 
 // ─── Mobile Drawer ────────────────────────────────────────────────────────────
 
 function MobileDrawer({
-  isOpen,
-  onClose,
-  lang,
-  setLang,
+  isOpen, onClose, lang, setLang,
 }: {
-  isOpen: boolean
-  onClose: () => void
-  lang: Lang
-  setLang: (l: Lang) => void
+  isOpen: boolean; onClose: () => void; lang: Lang; setLang: (l: Lang) => void
 }) {
   const t = content[lang].nav
-
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = ""
-    }
+    document.body.style.overflow = isOpen ? "hidden" : ""
+    return () => { document.body.style.overflow = "" }
   }, [isOpen])
-
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-    }
-    document.addEventListener("keydown", handler)
-    return () => document.removeEventListener("keydown", handler)
+    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    document.addEventListener("keydown", h)
+    return () => document.removeEventListener("keydown", h)
   }, [onClose])
 
   const links = [
-    { href: "#timeline", label: t.timeline, idx: "02" },
-    { href: "#services", label: t.services, idx: "03" },
-    { href: "#tools", label: t.tools, idx: "04" },
-    { href: "#contact", label: t.contact, idx: "05" },
+    { href: "#works",    label: t.works },
+    { href: "#timeline", label: t.timeline },
+    { href: "#services", label: t.services },
+    { href: "#contact",  label: t.contact },
   ]
 
   return (
     <>
-      {/* Scrim */}
       <div
-        className={`fixed inset-0 bg-background/80 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-foreground/20 backdrop-blur-sm z-40 transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
         aria-hidden="true"
       />
-
-      {/* Panel */}
       <aside
         role="dialog"
         aria-modal="true"
-        className={`fixed top-0 right-0 h-full w-full max-w-[320px] bg-background border-l border-border z-50 flex flex-col transform transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 h-full w-72 bg-background shadow-2xl z-50 flex flex-col rounded-l-3xl transform transition-transform duration-300 ease-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Drawer header */}
-        <div className="flex items-stretch h-[52px] border-b border-border shrink-0">
-          <div className="flex items-stretch flex-1 border-r border-border">
-            <LangToggle lang={lang} setLang={setLang} />
-          </div>
+        <div className="flex items-center justify-between p-5 border-b border-border">
+          <LangToggle lang={lang} setLang={setLang} />
           <button
             onClick={onClose}
-            className="flex items-center px-4 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="p-2 rounded-full hover:bg-muted transition-colors"
             aria-label="Close"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
-
-        {/* Nav links */}
-        <nav className="flex-1 overflow-y-auto">
+        <nav className="flex-1 p-5 space-y-1">
           {links.map((item) => (
             <a
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className="flex items-center justify-between px-5 py-5 border-b border-border text-sm font-light text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              className="flex items-center justify-between px-4 py-3.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
-              <span>{item.label}</span>
-              <Label>{item.idx}</Label>
+              {item.label}
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-40" />
             </a>
           ))}
         </nav>
-
-        {/* Theme toggle */}
-        <div className="flex items-center justify-between px-5 py-4 border-t border-border shrink-0">
-          <Label>Theme</Label>
+        <div className="p-5 border-t border-border flex items-center justify-between">
+          <span className="text-[10px] tracking-widest text-muted-foreground uppercase">Theme</span>
           <ThemeToggle />
         </div>
       </aside>
@@ -355,387 +394,453 @@ function MobileDrawer({
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
-const HEADER_H = 52 // px
-
 function Header({
-  lang,
-  setLang,
-  onMenuOpen,
+  lang, setLang, onMenuOpen,
 }: {
-  lang: Lang
-  setLang: (l: Lang) => void
-  onMenuOpen: () => void
+  lang: Lang; setLang: (l: Lang) => void; onMenuOpen: () => void
 }) {
+  const [scrolled, setScrolled] = useState(false)
   const t = content[lang].nav
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 30)
+    window.addEventListener("scroll", h, { passive: true })
+    return () => window.removeEventListener("scroll", h)
+  }, [])
 
   return (
     <header
-      style={{ height: HEADER_H }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border flex items-stretch"
+      style={{ height: NAV_H }}
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center px-5 lg:px-8 transition-all duration-300 ${
+        scrolled
+          ? "bg-background/80 backdrop-blur-lg shadow-sm"
+          : "bg-transparent"
+      }`}
     >
-      {/* Logo cell */}
-      <a
-        href="#"
-        className="flex items-center gap-2.5 px-5 border-r border-border shrink-0 hover:bg-muted transition-colors"
-      >
-        <div className="w-[18px] h-[18px] border border-foreground/50 flex items-center justify-center shrink-0">
-          <span className="text-[7px] font-medium leading-none">M</span>
+      {/* Logo */}
+      <a href="#" className="flex items-center gap-2.5 mr-auto">
+        <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center shrink-0">
+          <span className="text-[11px] font-black text-primary-foreground leading-none">M</span>
         </div>
-        <span className="text-[10px] tracking-[0.28em] hidden sm:block">STUDIO M</span>
+        <span className="text-[11px] tracking-[0.25em] font-semibold hidden sm:block">
+          STUDIO M
+        </span>
       </a>
 
-      {/* Index tag */}
-      <div className="hidden md:flex items-center px-5 border-r border-border shrink-0">
-        <Label>01</Label>
-      </div>
-
-      {/* Spacer */}
-      <div className="flex-1" />
-
-      {/* Desktop nav cells */}
-      <nav className="hidden md:flex items-stretch">
+      {/* Desktop nav */}
+      <nav className="hidden md:flex items-center gap-1 mr-4">
         {[
+          { href: "#works",    label: t.works },
           { href: "#timeline", label: t.timeline },
           { href: "#services", label: t.services },
-          { href: "#tools", label: t.tools },
         ].map((item) => (
           <a
             key={item.href}
             href={item.href}
-            className="flex items-center px-5 border-l border-border text-[10px] tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="px-4 py-2 rounded-full text-[10px] tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             {item.label}
           </a>
         ))}
         <a
           href="#contact"
-          className="flex items-center px-5 border-l border-border text-[10px] tracking-[0.2em] bg-foreground text-background hover:bg-foreground/85 transition-colors"
+          className="px-4 py-2 rounded-full text-[10px] tracking-[0.2em] bg-primary text-primary-foreground hover:bg-primary/90 transition-colors ml-2"
         >
           {t.contact}
         </a>
       </nav>
 
-      {/* Lang toggle cells */}
-      <div className="flex items-stretch border-l border-border">
+      <div className="hidden md:flex items-center gap-3">
         <LangToggle lang={lang} setLang={setLang} />
-      </div>
-
-      {/* Theme toggle — desktop only */}
-      <div className="hidden md:flex items-center px-3.5 border-l border-border">
         <ThemeToggle />
       </div>
 
-      {/* Mobile hamburger */}
       <button
         onClick={onMenuOpen}
-        className="md:hidden flex items-center px-4 border-l border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        className="md:hidden p-2 rounded-full hover:bg-muted transition-colors"
         aria-label="Open menu"
       >
-        <Menu className="w-3.5 h-3.5" />
+        <Menu className="w-4 h-4" />
       </button>
     </header>
   )
 }
 
-// ─── Section header row ───────────────────────────────────────────────────────
-
-function SectionRow({
-  label,
-  index,
-  meta,
-}: {
-  label: string
-  index: string
-  meta: string
-}) {
-  return (
-    <div className="flex border-b border-border">
-      <div className="px-5 py-3 border-r border-border shrink-0">
-        <Label>{label}</Label>
-      </div>
-      <div className="px-5 py-3 border-r border-border shrink-0">
-        <Label>{index}</Label>
-      </div>
-      <div className="flex-1" />
-      <div className="px-5 py-3 border-l border-border shrink-0">
-        <Label>{meta}</Label>
-      </div>
-    </div>
-  )
-}
-
-// ─── Hero ─────────────────────────────────────────────────────────────────────
+// ─── Hero Section ─────────────────────────────────────────────────────────────
 
 function HeroSection({ lang }: { lang: Lang }) {
   const t = content[lang].hero
   const isJp = lang === "jp"
+  const ref = useReveal()
 
   return (
     <section
-      style={{ minHeight: `calc(100vh - ${HEADER_H}px)` }}
-      className="flex flex-col border-b border-border"
+      style={{ minHeight: `calc(100svh - ${NAV_H}px)` }}
+      className="flex items-center px-4 lg:px-8 pt-4 pb-8"
     >
-      {/* Top kicker bar */}
-      <div className="flex border-b border-border shrink-0">
-        <div className="px-5 py-3 border-r border-border">
-          <Label>{t.kicker}</Label>
-        </div>
-        <div className="flex-1" />
-        <div className="px-5 py-3 border-l border-border">
-          <Label>01</Label>
-        </div>
-      </div>
+      <div
+        ref={ref}
+        className="reveal w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_210px] gap-4 lg:gap-5"
+      >
+        {/* ── Main hero card ── */}
+        <div className="bento-card rounded-[2rem] bg-card p-8 md:p-12 flex flex-col justify-between min-h-[420px] lg:min-h-[520px]">
+          <SectionLabel>{t.kicker}</SectionLabel>
 
-      {/* Main row */}
-      <div className="flex flex-1 min-h-0">
-        {/* Left — headline */}
-        <div className="flex-1 flex flex-col justify-end p-7 md:p-10 lg:p-14 border-r border-border">
-          <h1
-            className={`leading-[1.18] mb-9 ${
-              isJp
-                ? "text-3xl sm:text-4xl md:text-5xl lg:text-[3rem] font-light"
-                : "text-[clamp(2rem,3.8vw,3.4rem)] font-extralight tracking-tight"
-            }`}
-          >
-            {t.headline}
-          </h1>
+          <div className="my-8">
+            <h1
+              className={`leading-[1.05] mb-6 ${
+                isJp
+                  ? "text-4xl sm:text-5xl md:text-6xl font-light"
+                  : "text-[clamp(3rem,7vw,6rem)] font-black tracking-tight"
+              }`}
+            >
+              {t.lines.map((line, i) => (
+                <span key={i} className="block">
+                  {line}
+                </span>
+              ))}
+            </h1>
+            <p
+              className={`text-muted-foreground leading-relaxed max-w-md ${
+                isJp ? "text-sm font-light" : "text-[15px] font-light"
+              }`}
+            >
+              {t.tagline}
+            </p>
+          </div>
 
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2.5 self-start border border-foreground/40 px-6 py-3 text-[10px] tracking-[0.2em] hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-200"
-          >
-            {t.cta}
-            <ArrowUpRight className="w-3 h-3 shrink-0" />
-          </a>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-[11px] tracking-[0.15em] font-semibold hover:bg-primary/90 transition-all duration-200"
+            >
+              {t.cta}
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href="#works"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-[11px] tracking-[0.15em] text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-all duration-200"
+            >
+              {content[lang].works.label}
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
 
-        {/* Right — info cells column (desktop) */}
-        <div className="hidden lg:flex w-60 xl:w-72 flex-col shrink-0">
-          {/* Capabilities */}
-          <div className="flex-1 p-6 border-b border-border">
-            <Label>{t.side.capabilities.label}</Label>
-            <ul className="mt-4 space-y-2">
-              {t.side.capabilities.items.map((item, i) => (
-                <li key={i} className="text-[11px] font-light text-muted-foreground">
+        {/* ── Right info cards ── */}
+        <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-5">
+          {/* Status */}
+          <div className="bento-card rounded-[1.5rem] bg-primary p-5 flex flex-col justify-between">
+            <SectionLabel light>{t.cards.status.label}</SectionLabel>
+            <div className="mt-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary-foreground shrink-0" />
+                <span className="text-sm font-bold text-primary-foreground">{t.cards.status.value}</span>
+              </div>
+              <p className="text-[11px] text-primary-foreground/65 mt-1">{t.cards.status.sub}</p>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="bento-card rounded-[1.5rem] bg-surf-blue/20 p-5 flex flex-col justify-between">
+            <SectionLabel>{t.cards.location.label}</SectionLabel>
+            <p className="text-sm font-semibold mt-3">{t.cards.location.value}</p>
+          </div>
+
+          {/* Focus — desktop only */}
+          <div className="hidden lg:flex bento-card rounded-[1.5rem] bg-mustard/25 p-5 flex-col">
+            <SectionLabel>{t.cards.focus.label}</SectionLabel>
+            <ul className="mt-3 space-y-1.5">
+              {t.cards.focus.items.map((item, i) => (
+                <li key={i} className="text-[11px] font-medium flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-foreground/40 shrink-0" />
                   {item}
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* Location */}
-          <div className="flex-1 p-6 border-b border-border">
-            <Label>{t.side.location.label}</Label>
-            <p className="mt-4 text-[11px] font-light">{t.side.location.value}</p>
-          </div>
-
-          {/* Status */}
-          <div className="flex-1 p-6">
-            <Label>{t.side.status.label}</Label>
-            <div className="mt-4 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-foreground shrink-0" />
-              <p className="text-[11px] font-light">{t.side.status.value}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom caption bar */}
-      <div className="flex border-t border-border shrink-0">
-        <div className="px-5 py-3 border-r border-border">
-          <Label>{t.caption}</Label>
-        </div>
-        <div className="flex-1" />
-        <div className="px-5 py-3">
-          <Label>{t.scroll}</Label>
         </div>
       </div>
     </section>
   )
 }
 
-// ─── Timeline ─────────────────────────────────────────────────────────────────
+// ─── Works — individual card components ───────────────────────────────────────
+
+function VideoWorkCard({ item, featured }: { item: WorkItem; featured?: boolean }) {
+  const ref = useReveal()
+  const gradient =
+    item.id === "02"
+      ? "bg-gradient-to-br from-terracotta to-mustard"
+      : "bg-gradient-to-br from-surf-blue to-terracotta/70"
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal bento-card rounded-[1.75rem] overflow-hidden bg-card flex flex-col ${
+        featured ? "sm:col-span-2 lg:col-span-1" : ""
+      }`}
+    >
+      <div className={`relative flex items-center justify-center aspect-[4/3] ${gradient}`}>
+        <div className="w-12 h-12 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center">
+          <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+        </div>
+        <span className="absolute top-4 left-4 text-[9px] tracking-[0.3em] uppercase text-white/75">
+          {item.category}
+        </span>
+        <span className="absolute top-4 right-4 text-[9px] text-white/60">{item.year}</span>
+      </div>
+      <div className="p-5 flex flex-col flex-1">
+        <h3 className="font-bold text-base mb-2">{item.title}</h3>
+        <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+        <div className="flex flex-wrap gap-1.5 mt-4">
+          {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function CXWorkCard({ item, featured }: { item: WorkItem; featured?: boolean }) {
+  const ref = useReveal()
+  return (
+    <div
+      ref={ref}
+      className={`reveal bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col ${
+        featured ? "sm:col-span-2 lg:col-span-2" : ""
+      }`}
+    >
+      <div className="flex items-start justify-between mb-5">
+        <SectionLabel>{item.category}</SectionLabel>
+        <span className="text-[10px] text-muted-foreground">{item.year}</span>
+      </div>
+      <h3
+        className={`font-black leading-tight mb-3 ${
+          featured ? "text-2xl lg:text-[2rem]" : "text-xl"
+        }`}
+      >
+        {item.title}
+      </h3>
+      <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+      <div className="flex flex-wrap gap-1.5 mt-5">
+        {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+      </div>
+    </div>
+  )
+}
+
+// ─── Works Section ────────────────────────────────────────────────────────────
+
+function WorksSection({ lang }: { lang: Lang }) {
+  const t = content[lang].works
+  const headRef = useReveal()
+
+  return (
+    <section id="works" className="px-4 lg:px-8 py-20 lg:py-28">
+      <div className="max-w-7xl mx-auto">
+        <div ref={headRef} className="reveal flex items-baseline justify-between mb-8">
+          <SectionLabel>{t.label}</SectionLabel>
+          <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+          <CXWorkCard   item={t.items[0]} featured />
+          <VideoWorkCard item={t.items[1]} />
+          <VideoWorkCard item={t.items[2]} />
+          <CXWorkCard   item={t.items[3]} />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Timeline — individual card ───────────────────────────────────────────────
+
+function TimelineCard({
+  item, isJp, delay,
+}: {
+  item: (typeof content.en.timeline.items)[number]
+  isJp: boolean
+  delay: number
+}) {
+  const ref = useReveal()
+  return (
+    <div
+      ref={ref}
+      className="reveal bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 grid grid-cols-1 md:grid-cols-[160px_1fr] gap-5"
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <div>
+        <p className="text-[10px] tracking-widest text-muted-foreground uppercase mb-2">{item.period}</p>
+        <p className="text-[11px] text-primary font-semibold">{item.org}</p>
+      </div>
+      <div>
+        <h3 className={`font-bold mb-3 ${isJp ? "text-base" : "text-base tracking-wide"}`}>
+          {item.role}
+        </h3>
+        <p className="text-[13px] text-muted-foreground leading-relaxed mb-4">{item.description}</p>
+        <div className="flex flex-wrap gap-1.5">
+          {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function TimelineSection({ lang }: { lang: Lang }) {
   const t = content[lang].timeline
-  const isJp = lang === "jp"
+  const headRef = useReveal()
 
   return (
-    <section id="timeline" className="border-b border-border">
-      <SectionRow label={t.label} index={t.index} meta={t.count} />
-
-      {t.items.map((item, i) => (
-        <div
-          key={i}
-          className="flex flex-col md:flex-row border-b border-border last:border-b-0 group hover:bg-foreground hover:text-background cell-hover cursor-default"
-        >
-          {/* Period */}
-          <div className="md:w-44 lg:w-52 px-5 py-7 border-b md:border-b-0 md:border-r border-border group-hover:border-primary/20 shrink-0 transition-colors">
-            <Label>{item.period}</Label>
-          </div>
-
-          {/* Role + Org */}
-          <div className="md:w-52 lg:w-64 px-5 py-7 border-b md:border-b-0 md:border-r border-border group-hover:border-primary/20 shrink-0 transition-colors">
-            <p className="text-[9px] tracking-[0.3em] text-muted-foreground group-hover:text-primary/50 uppercase mb-3 transition-colors">
-              {item.org}
-            </p>
-            <p
-              className={`leading-snug ${
-                isJp ? "text-sm font-light" : "text-sm font-light tracking-wide"
-              }`}
-            >
-              {item.role}
-            </p>
-          </div>
-
-          {/* Description */}
-          <div className="flex-1 px-5 py-7">
-            <p
-              className={`text-sm leading-[1.82] text-muted-foreground group-hover:text-primary/65 mb-5 transition-colors ${
-                isJp ? "font-light" : "font-light"
-              }`}
-            >
-              {item.description}
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {item.tags.map((tag, j) => (
-                <Tag key={j}>{tag}</Tag>
-              ))}
-            </div>
-          </div>
+    <section id="timeline" className="px-4 lg:px-8 py-20 lg:py-28 bg-muted/40">
+      <div className="max-w-7xl mx-auto">
+        <div ref={headRef} className="reveal flex items-baseline justify-between mb-8">
+          <SectionLabel>{t.label}</SectionLabel>
+          <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
         </div>
-      ))}
+        <div className="space-y-4">
+          {t.items.map((item, i) => (
+            <TimelineCard key={i} item={item} isJp={lang === "jp"} delay={i * 80} />
+          ))}
+        </div>
+      </div>
     </section>
   )
 }
 
-// ─── Services ─────────────────────────────────────────────────────────────────
+// ─── Services — individual card ───────────────────────────────────────────────
+
+const iconMap: Record<IconName, React.ComponentType<{ className?: string }>> = {
+  Zap, Film, Monitor,
+}
+
+const serviceBg = ["bg-card", "bg-mustard/20", "bg-surf-blue/15"]
+
+function ServiceCard({
+  svc, index, isJp,
+}: {
+  svc: (typeof content.en.services.items)[number]
+  index: number
+  isJp: boolean
+}) {
+  const ref = useReveal()
+  const Icon = iconMap[svc.icon]
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal bento-card rounded-[1.75rem] ${serviceBg[index]} p-7 flex flex-col`}
+      style={{ transitionDelay: `${index * 90}ms` }}
+    >
+      <div className="flex items-start justify-between mb-6">
+        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+          <Icon className="w-5 h-5 text-primary" />
+        </div>
+        <span className="text-[10px] tracking-widest text-muted-foreground">{svc.number}</span>
+      </div>
+      <h3 className={`font-bold text-base mb-3 ${isJp ? "" : "tracking-wide"}`}>{svc.title}</h3>
+      <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{svc.description}</p>
+      <div className="flex flex-wrap gap-1.5 mt-5">
+        {svc.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+      </div>
+    </div>
+  )
+}
 
 function ServicesSection({ lang }: { lang: Lang }) {
   const t = content[lang].services
-  const isJp = lang === "jp"
+  const headRef = useReveal()
 
   return (
-    <section id="services" className="border-b border-border">
-      <SectionRow label={t.label} index={t.index} meta={t.count} />
-
-      {/* Three service cards in a row */}
-      <div className="flex flex-col md:flex-row">
-        {t.items.map((svc, i) => (
-          <div
-            key={i}
-            className="flex-1 flex flex-col p-7 lg:p-9 border-b md:border-b-0 md:border-r border-border last:border-b-0 last:border-r-0 group hover:bg-foreground hover:text-background cell-hover cursor-default"
-          >
-            {/* Number + arrow */}
-            <div className="flex items-center justify-between mb-8">
-              <Label>{svc.number}</Label>
-              <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary/50 opacity-0 group-hover:opacity-100 transition-all" />
-            </div>
-
-            {/* Title + description */}
-            <div className="flex-1">
-              <h3
-                className={`mb-4 leading-snug ${
-                  isJp ? "text-base font-normal" : "text-base font-light tracking-wide"
-                }`}
-              >
-                {svc.title}
-              </h3>
-              <p className="text-[13px] text-muted-foreground group-hover:text-primary/60 leading-[1.82] font-light transition-colors">
-                {svc.description}
-              </p>
-            </div>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-1.5 mt-7">
-              {svc.tags.map((tag, j) => (
-                <Tag key={j}>{tag}</Tag>
-              ))}
-            </div>
-          </div>
-        ))}
+    <section id="services" className="px-4 lg:px-8 py-20 lg:py-28">
+      <div className="max-w-7xl mx-auto">
+        <div ref={headRef} className="reveal flex items-baseline justify-between mb-8">
+          <SectionLabel>{t.label}</SectionLabel>
+          <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+          {t.items.map((svc, i) => (
+            <ServiceCard key={i} svc={svc} index={i} isJp={lang === "jp"} />
+          ))}
+        </div>
       </div>
     </section>
   )
 }
 
-// ─── Tools ────────────────────────────────────────────────────────────────────
+// ─── Tools Section ────────────────────────────────────────────────────────────
 
 function ToolsSection({ lang }: { lang: Lang }) {
   const t = content[lang].tools
+  const ref = useReveal()
 
   return (
-    <section id="tools" className="border-b border-border">
-      <SectionRow label={t.label} index={t.index} meta={t.count} />
-
-      {/* Tool cells — responsive grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
-        {toolsList.map((tool, i) => (
-          <div
-            key={i}
-            className="px-5 py-5 border-r border-b border-border group hover:bg-foreground hover:text-background cell-hover cursor-default"
-          >
-            <p className="text-[11px] font-light tracking-wide group-hover:text-background transition-colors">
+    <section id="tools" className="px-4 lg:px-8 py-20 lg:py-28 bg-muted/40">
+      <div className="max-w-7xl mx-auto">
+        <div ref={ref} className="reveal flex items-baseline justify-between mb-8">
+          <SectionLabel>{t.label}</SectionLabel>
+          <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
+        </div>
+        <div className="flex flex-wrap gap-2.5">
+          {toolsList.map((tool, i) => (
+            <span
+              key={i}
+              className="bento-card px-4 py-2.5 rounded-full bg-card border border-border/60 text-[12px] font-medium cursor-default hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+            >
               {tool}
-            </p>
-          </div>
-        ))}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   )
 }
 
-// ─── Contact + Footer ─────────────────────────────────────────────────────────
+// ─── Footer / Contact ─────────────────────────────────────────────────────────
 
 function Footer({ lang }: { lang: Lang }) {
   const tc = content[lang].contact
   const tf = content[lang].footer
   const isJp = lang === "jp"
+  const ref = useReveal()
 
   return (
-    <footer id="contact">
-      {/* Contact section */}
-      <div className="border-b border-border">
-        <SectionRow label={tc.label} index={tc.index} meta="" />
+    <footer id="contact" className="px-4 lg:px-8 py-20 lg:py-28">
+      <div className="max-w-7xl mx-auto">
+        <div
+          ref={ref}
+          className="reveal bento-card rounded-[2rem] bg-primary p-8 md:p-12 lg:p-16 text-primary-foreground"
+        >
+          <SectionLabel light>{tc.label}</SectionLabel>
+          <h2
+            className={`mt-6 mb-10 leading-[1.05] ${
+              isJp
+                ? "text-4xl md:text-5xl lg:text-6xl font-light"
+                : "text-[clamp(2.6rem,5.5vw,5rem)] font-black tracking-tight"
+            }`}
+          >
+            {tc.headline[0]}
+            <br />
+            {tc.headline[1]}
+          </h2>
 
-        {/* CTA + sidebar */}
-        <div className="flex flex-col lg:flex-row">
-          {/* Left: big headline + email */}
-          <div className="flex-1 p-8 md:p-12 lg:p-16 border-b lg:border-b-0 lg:border-r border-border">
-            <h2
-              className={`leading-[1.18] mb-10 ${
-                isJp
-                  ? "text-4xl md:text-5xl lg:text-6xl font-light"
-                  : "text-[clamp(2.6rem,4.8vw,4.2rem)] font-extralight tracking-tight"
-              }`}
-            >
-              {tc.headline[0]}
-              <br />
-              {tc.headline[1]}
-            </h2>
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <a
               href={`mailto:${tc.email}`}
-              className="inline-flex items-center gap-3 text-[13px] font-light tracking-wider hover:opacity-50 transition-opacity duration-300"
+              className="inline-flex items-center gap-3 text-sm font-semibold hover:opacity-70 transition-opacity"
             >
               {tc.email}
               <ArrowUpRight className="w-4 h-4 shrink-0" />
             </a>
+            <p className="text-[12px] text-primary-foreground/60">{tc.tagline}</p>
           </div>
 
-          {/* Right: availability + socials */}
-          <div className="w-full lg:w-64 xl:w-72 p-7 flex flex-col justify-between gap-8">
-            <div>
-              <Label>{tc.avail_label}</Label>
-              <p className="mt-4 text-[12px] font-light text-muted-foreground leading-relaxed">
-                {tc.tagline}
-              </p>
-            </div>
-            <div className="flex gap-5">
+          <div className="flex items-center justify-between mt-12 pt-8 border-t border-primary-foreground/20">
+            <div className="flex gap-6">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[9px] tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors uppercase"
+                className="text-[10px] tracking-widest uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors"
               >
                 Instagram
               </a>
@@ -743,29 +848,13 @@ function Footer({ lang }: { lang: Lang }) {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[9px] tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors uppercase"
+                className="text-[10px] tracking-widest uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors"
               >
                 GitHub
               </a>
             </div>
+            <span className="text-[10px] text-primary-foreground/40 tracking-widest">{tf.copy}</span>
           </div>
-        </div>
-      </div>
-
-      {/* Footer bar — mirrors header height */}
-      <div
-        style={{ height: HEADER_H }}
-        className="flex items-stretch"
-      >
-        <div className="flex items-center px-5 border-r border-border shrink-0">
-          <span className="text-[10px] tracking-[0.28em]">STUDIO M</span>
-        </div>
-        <div className="flex items-center px-5 border-r border-border shrink-0">
-          <Label>Web · Video · CX</Label>
-        </div>
-        <div className="flex-1" />
-        <div className="flex items-center px-5 border-l border-border shrink-0">
-          <Label>{tf.copy}</Label>
         </div>
       </div>
     </footer>
@@ -791,13 +880,13 @@ export default function PortfolioPage() {
         lang={lang}
         setLang={setLang}
       />
-
-      <div style={{ paddingTop: HEADER_H }}>
-        <HeroSection lang={lang} />
+      <div style={{ paddingTop: NAV_H }}>
+        <HeroSection   lang={lang} />
+        <WorksSection  lang={lang} />
         <TimelineSection lang={lang} />
         <ServicesSection lang={lang} />
-        <ToolsSection lang={lang} />
-        <Footer lang={lang} />
+        <ToolsSection  lang={lang} />
+        <Footer        lang={lang} />
       </div>
     </main>
   )

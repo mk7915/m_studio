@@ -15,7 +15,7 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="p-2 hover:bg-secondary transition-colors"
+        className="p-2 rounded-full hover:bg-muted transition-colors"
         aria-label="テーマを切り替え"
       >
         <div className="w-5 h-5" />
@@ -26,7 +26,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 hover:bg-secondary transition-colors"
+      className="p-2 rounded-full hover:bg-muted transition-colors"
       aria-label={theme === "dark" ? "ライトモードに切り替え" : "ダークモードに切り替え"}
     >
       {theme === "dark" ? (
