@@ -411,7 +411,7 @@ function Header({
   return (
     <header
       style={{ height: NAV_H }}
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center px-5 lg:px-8 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center px-5 lg:px-12 transition-all duration-300 ${
         scrolled
           ? "bg-background/80 backdrop-blur-lg shadow-sm"
           : "bg-transparent"
@@ -529,7 +529,7 @@ function StudioHeroSection({ lang }: { lang: Lang }) {
       ref={sectionRef}
       id="studio-hero"
       style={{ background: "#F4EFEA" }}
-      className={`relative px-5 sm:px-8 lg:px-10 pt-8 pb-2 ${!isTouch ? "cursor-crosshair" : ""}`}
+      className={`relative px-5 sm:px-10 lg:px-14 pt-8 pb-2 ${!isTouch ? "cursor-crosshair" : ""}`}
     >
       <p
         className={`font-hint text-base md:text-lg italic text-muted-foreground/70 mb-1 select-none ${
@@ -605,11 +605,11 @@ function HeroSection({ lang }: { lang: Lang }) {
   return (
     <section
       style={{ minHeight: `calc(100svh - ${NAV_H}px)`, background: "#F4EFEA" }}
-      className="flex items-center px-4 lg:px-8 pt-4 pb-8"
+      className="flex items-center px-5 sm:px-8 lg:px-12 pt-4 pb-8"
     >
       <div
         ref={ref}
-        className="reveal w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_210px] gap-4 lg:gap-5"
+        className="reveal w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_210px] gap-4 lg:gap-5"
       >
         {/* ── Main hero card ── */}
         <div className="bento-card rounded-[2rem] bg-card p-8 md:p-12 flex flex-col justify-between min-h-[420px] lg:min-h-[520px]">
@@ -775,8 +775,8 @@ function WorksSection({ lang }: { lang: Lang }) {
   const headRef = useReveal()
 
   return (
-    <section id="works" className="px-4 lg:px-8 py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto">
+    <section id="works" className="px-5 sm:px-8 lg:px-12 py-20 lg:py-28">
+      <div className="max-w-6xl mx-auto">
         <div ref={headRef} className="reveal flex items-baseline justify-between mb-8">
           <SectionLabel>{t.label}</SectionLabel>
           <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
@@ -831,8 +831,8 @@ function TimelineSection({ lang }: { lang: Lang }) {
   const headRef = useReveal()
 
   return (
-    <section id="timeline" className="px-4 lg:px-8 py-20 lg:py-28 bg-muted/40">
-      <div className="max-w-7xl mx-auto">
+    <section id="timeline" className="px-5 sm:px-8 lg:px-12 py-20 lg:py-28 bg-muted/40">
+      <div className="max-w-6xl mx-auto">
         <div ref={headRef} className="reveal flex items-baseline justify-between mb-8">
           <SectionLabel>{t.label}</SectionLabel>
           <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
@@ -891,8 +891,8 @@ function ServicesSection({ lang }: { lang: Lang }) {
   const headRef = useReveal()
 
   return (
-    <section id="services" className="px-4 lg:px-8 py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto">
+    <section id="services" className="px-5 sm:px-8 lg:px-12 py-20 lg:py-28">
+      <div className="max-w-6xl mx-auto">
         <div ref={headRef} className="reveal flex items-baseline justify-between mb-8">
           <SectionLabel>{t.label}</SectionLabel>
           <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
@@ -914,8 +914,8 @@ function ToolsSection({ lang }: { lang: Lang }) {
   const ref = useReveal()
 
   return (
-    <section id="tools" className="px-4 lg:px-8 py-20 lg:py-28 bg-muted/40">
-      <div className="max-w-7xl mx-auto">
+    <section id="tools" className="px-5 sm:px-8 lg:px-12 py-20 lg:py-28 bg-muted/40">
+      <div className="max-w-6xl mx-auto">
         <div ref={ref} className="reveal flex items-baseline justify-between mb-8">
           <SectionLabel>{t.label}</SectionLabel>
           <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
@@ -954,7 +954,7 @@ function Footer({ lang }: { lang: Lang }) {
   const ref = useReveal()
 
   return (
-    <footer id="contact" className="px-4 lg:px-8 pt-8 pb-14 lg:pb-20">
+    <footer id="contact" className="px-5 sm:px-8 lg:px-12 pt-8 pb-14 lg:pb-20">
       <div className="max-w-5xl mx-auto flex flex-col items-center">
 
         {/* Section label */}
