@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Noto_Sans_JP } from 'next/font/google'
+import { Inter, Noto_Sans_JP, Montserrat } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
@@ -8,6 +8,13 @@ const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '700', '900'],
   variable: '--font-inter',
+  display: 'swap',
+})
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['700', '800', '900'],
+  variable: '--font-montserrat',
   display: 'swap',
 })
 
@@ -36,7 +43,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="bg-background" suppressHydrationWarning>
-      <body className={`${inter.variable} ${notoSansJP.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${notoSansJP.variable} ${montserrat.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

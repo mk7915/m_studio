@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { ArrowUpRight, Menu, X, Play, Zap, Film, Monitor } from "lucide-react"
+import { ArrowUpRight, Menu, X, Play, Zap, Film, Monitor, MessageSquare, Code2 } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 type Lang = "en" | "jp"
@@ -490,7 +490,7 @@ function HeroSection({ lang }: { lang: Lang }) {
               className={`leading-[1.05] mb-6 ${
                 isJp
                   ? "text-4xl sm:text-5xl md:text-6xl font-light"
-                  : "text-[clamp(3rem,7vw,6rem)] font-black tracking-tight"
+                  : "font-display font-black tracking-tighter text-[clamp(3rem,7vw,6rem)]"
               }`}
             >
               {t.lines.map((line, i) => (
@@ -576,7 +576,7 @@ function VideoWorkCard({ item, featured }: { item: WorkItem; featured?: boolean 
   return (
     <div
       ref={ref}
-      className={`reveal bento-card rounded-[1.75rem] overflow-hidden bg-card flex flex-col ${
+      className={`reveal bento-card rounded-[1.75rem] overflow-hidden bg-card flex flex-col hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out ${
         featured ? "sm:col-span-2 lg:col-span-1" : ""
       }`}
     >
@@ -590,7 +590,13 @@ function VideoWorkCard({ item, featured }: { item: WorkItem; featured?: boolean 
         <span className="absolute top-4 right-4 text-[9px] text-white/60">{item.year}</span>
       </div>
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-bold text-base mb-2">{item.title}</h3>
+        {/* Title row with Play icon badge */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="font-bold text-base leading-snug flex-1">{item.title}</h3>
+          <span className="shrink-0 w-7 h-7 rounded-full bg-terracotta/10 flex items-center justify-center mt-0.5">
+            <Play className="w-3.5 h-3.5 text-terracotta fill-terracotta ml-0.5" />
+          </span>
+        </div>
         <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
         <div className="flex flex-wrap gap-1.5 mt-4">
           {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
@@ -602,16 +608,27 @@ function VideoWorkCard({ item, featured }: { item: WorkItem; featured?: boolean 
 
 function CXWorkCard({ item, featured }: { item: WorkItem; featured?: boolean }) {
   const ref = useReveal()
+  const isOps = item.category.toLowerCase().includes("operat") ||
+                item.category === "オペレーション"
+  const Icon = isOps ? Code2 : MessageSquare
+  const iconColor = isOps ? "text-mustard bg-mustard/15" : "text-surf-blue bg-surf-blue/15"
+
   return (
     <div
       ref={ref}
-      className={`reveal bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col ${
+      className={`reveal bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out ${
         featured ? "sm:col-span-2 lg:col-span-2" : ""
       }`}
     >
+      {/* Header row: category + year left, icon right */}
       <div className="flex items-start justify-between mb-5">
-        <SectionLabel>{item.category}</SectionLabel>
-        <span className="text-[10px] text-muted-foreground">{item.year}</span>
+        <div>
+          <SectionLabel>{item.category}</SectionLabel>
+          <p className="text-[10px] text-muted-foreground mt-1">{item.year}</p>
+        </div>
+        <span className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center ${iconColor}`}>
+          <Icon className="w-4 h-4" />
+        </span>
       </div>
       <h3
         className={`font-black leading-tight mb-3 ${
