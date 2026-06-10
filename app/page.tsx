@@ -112,7 +112,7 @@ const content = {
     contact: {
       label: "CONTACT",
       headline: ["Ready to solve", "your next challenge."],
-      email: "contact@example.com",
+      email: "sub.mk.work@outlook.com",
       tagline: "Open to freelance · Asia & Remote",
       hint: "Tap this 'tiny' button to start a project  =)",
     },
@@ -220,7 +220,7 @@ const content = {
     contact: {
       label: "お問い合わせ",
       headline: ["次の課題を、", "共に解決しましょう。"],
-      email: "contact@example.com",
+      email: "sub.mk.work@outlook.com",
       tagline: "フリーランス案件受付中 · アジア & リモート対応",
       hint: "Let's start your project! =)",
     },
