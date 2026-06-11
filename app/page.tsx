@@ -729,7 +729,7 @@ function WorkVideoLinkCard({
         </div>
         <div className="p-5 flex flex-col flex-1">
           <h3 className="font-bold text-base leading-snug mb-2">{item.title}</h3>
-          <p className="text-[15px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+          <p className="text-[18px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
           <div className="flex flex-wrap gap-1.5 mt-4">
             {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
