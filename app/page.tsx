@@ -1,8 +1,14 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { ArrowUpRight, Menu, X, Play, Zap, Film, Monitor, MessageSquare, Code2, Instagram, Github } from "lucide-react"
+import { ArrowUpRight, Menu, X, Play, Zap, Film, Monitor, MessageSquare, Code2, Instagram, Github, Briefcase } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 type Lang = "en" | "jp"
 type IconName = "Zap" | "Film" | "Monitor"
@@ -25,7 +31,7 @@ const content = {
     },
     works: {
       label: "SELECTED WORKS",
-      count: "4 projects",
+      count: "5 projects",
       items: [
         {
           id: "01", type: "cx" as const, year: "2024",
@@ -58,6 +64,14 @@ const content = {
           description:
             "kintone + GAS workflows eliminating 15+ hours of manual operations per week across sales and support.",
           tags: ["kintone", "GAS", "Analytics"],
+        },
+        {
+          id: "05", type: "sales" as const, year: "",
+          category: "Global Recruitment Consulting",
+          title: "Cross-Border Talent Acquisition",
+          description:
+            "Experienced recruitment consultant operating in Japan and international markets. Specializing in end-to-end consulting from high-volume staffing operations to executive healthcare and biotech roles.",
+          tags: ["Talent Acquisition", "B2B Sales", "Global Operations", "Negotiation"],
         },
       ] as WorkItem[],
     },
@@ -133,7 +147,7 @@ const content = {
       },
     },
     works: {
-      label: "制作実績", count: "4件",
+      label: "制作実績", count: "5件",
       items: [
         {
           id: "01", type: "cx" as const, year: "2024",
@@ -166,6 +180,14 @@ const content = {
           description:
             "kintone + GASによるワークフロー自動化で、営業・サポート横断の手動作業を週15時間以上削減。",
           tags: ["kintone", "GAS", "データ分析"],
+        },
+        {
+          id: "05", type: "sales" as const, year: "",
+          category: "人材採用コンサルティング",
+          title: "グローバル人材採用コンサルティング",
+          description:
+            "日本および海外市場における人材採用コンサルタント。大手派遣領域から、専門性の高い外資ハイクラス・ヘルスケア（バイオ・研究職）領域まで、企業と求職者の双方から組織の課題解決を支援。",
+          tags: ["採用コンサルティング", "法人営業", "グローバル環境", "折衝力"],
         },
       ] as WorkItem[],
     },
@@ -221,7 +243,7 @@ const content = {
       label: "お問い合わせ",
       headline: ["次の課題を、", "共に解決しましょう。"],
       email: "sub.mk.work@outlook.com",
-      tagline: "フリーランス案件受付中 · アジア & リモート対応",
+      tagline: "フリーランス案件受付中 · リモート対応",
       hint: "Let's start your project! =)",
     },
     footer: { copy: "© 2026 Studio M" },
@@ -230,7 +252,7 @@ const content = {
 
 type WorkItem = {
   id: string
-  type: "cx" | "video"
+  type: "cx" | "video" | "sales"
   year: string
   category: string
   title: string
@@ -768,6 +790,138 @@ function CXWorkCard({ item, featured }: { item: WorkItem; featured?: boolean }) 
   )
 }
 
+// ─── Recruitment Consulting — bilingual detail content ────────────────────────
+
+const recruitmentDetail = {
+  title: "01 | Global Recruitment Consulting / 人材採用コンサルティング",
+  en: {
+    flag: "🇺🇸",
+    heading: "Overview & Experience",
+    overview:
+      "Operated as a professional recruitment consultant across Japan and Southeast Asia, delivering tailored talent acquisition solutions across various organizational levels and industries.",
+    subheading: "Core Experience",
+    items: [
+      {
+        label: "Japan (Nagoya & Tokyo):",
+        text: "Managed end-to-end recruitment in the temporary staffing sector, focusing on the IT, food/beverage, and real estate industries to resolve chronic labor shortages and support client operations.",
+      },
+      {
+        label: "Overseas (Philippines & Thailand):",
+        text: "Worked as a Recruiting Advisor (RA) to support companies with local and expatriate hiring, navigating diverse cultural environments to build strong organizational foundations.",
+      },
+      {
+        label: "Global Agency (Michael Page):",
+        text: "Specialized in the Healthcare & Life Sciences division. Handled dual-sided consulting for highly specialized positions, including executive and R&D/biotech roles for global enterprises.",
+      },
+    ],
+  },
+  jp: {
+    flag: "🇯🇵",
+    heading: "概要と実績",
+    overview:
+      "日本および海外（東南アジア）を舞台に、多様な雇用形態やレイヤーにおける人材採用・組織課題の解決に従事。新規開拓からマッチング創出まで一貫して伴走しました。",
+    subheading: "主な実績・経験",
+    items: [
+      {
+        label: "日本（名古屋・東京）：",
+        text: "大手派遣領域にてIT、食品飲料、不動産業界を中心に担当。新規クライアントの開拓から、現場スタッフの就業フォローまで一貫して行い、現場のオペレーション改善に貢献。",
+      },
+      {
+        label: "海外（フィリピン・タイ）：",
+        text: "リクルーティングアドバイザー（RA）として、現地採用や日本人採用をサポート。文化や労働観が異なる環境下で、組織の基盤となる人材マッチングを支援。",
+      },
+      {
+        label: "外資ハイクラス（マイケル・ペイジ）：",
+        text: "ヘルスケア・ライフサイエンス部門にて、外資系企業のバイオ・研究職といった専門性の高いポジションを担当。企業・求職者の両面型コンサルタントとして高度な折衝を経験。",
+      },
+    ],
+  },
+} as const
+
+function RecruitmentDetailDialog({
+  open, onOpenChange,
+}: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}) {
+  const sides = [recruitmentDetail.en, recruitmentDetail.jp]
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto rounded-[1.5rem]">
+        <DialogHeader>
+          <DialogTitle className="text-base lg:text-lg font-black tracking-tight pr-6">
+            {recruitmentDetail.title}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-2">
+          {sides.map((side) => (
+            <div key={side.flag}>
+              <h4 className="flex items-center gap-2 text-sm font-bold mb-2">
+                <span className="text-lg leading-none">{side.flag}</span>
+                {side.heading}
+              </h4>
+              <p className="text-[13px] text-muted-foreground leading-relaxed mb-4">
+                {side.overview}
+              </p>
+              <h5 className="text-[10px] tracking-[0.2em] uppercase font-semibold text-primary mb-2">
+                {side.subheading}
+              </h5>
+              <ul className="space-y-3">
+                {side.items.map((it) => (
+                  <li key={it.label} className="text-[13px] leading-relaxed">
+                    <span className="font-bold">{it.label}</span>{" "}
+                    <span className="text-muted-foreground">{it.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+// ─── Sales / Recruitment Work Card ─────────────────────────────────────────────
+
+function SalesWorkCard({ item, lang }: { item: WorkItem; lang: Lang }) {
+  const ref = useReveal()
+  const [open, setOpen] = useState(false)
+  const isJp = lang === "jp"
+
+  return (
+    <div ref={ref} className="reveal">
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={() => setOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") setOpen(true)
+        }}
+        className="bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col h-full cursor-pointer hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out"
+      >
+        <div className="flex items-start justify-between mb-5">
+          <SectionLabel>{item.category}</SectionLabel>
+          <span className="shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-terracotta bg-terracotta/15">
+            <Briefcase className="w-4 h-4" />
+          </span>
+        </div>
+        <h3 className="font-black leading-tight mb-3 text-xl">{item.title}</h3>
+        <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+        <div className="flex flex-wrap gap-1.5 mt-5">
+          {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        </div>
+        <span className="inline-flex items-center gap-1 mt-5 text-[11px] font-semibold text-primary">
+          {isJp ? "詳細を見る" : "View Details"}
+          <ArrowUpRight className="w-3.5 h-3.5" />
+        </span>
+      </div>
+      <RecruitmentDetailDialog open={open} onOpenChange={setOpen} />
+    </div>
+  )
+}
+
 // ─── Works Section ────────────────────────────────────────────────────────────
 
 function WorksSection({ lang }: { lang: Lang }) {
@@ -787,6 +941,7 @@ function WorksSection({ lang }: { lang: Lang }) {
           <VideoWorkCard item={t.items[1]} />
           <VideoWorkCard item={t.items[2]} />
           <CXWorkCard   item={t.items[3]} />
+          <SalesWorkCard item={t.items[4]} lang={lang} />
         </div>
       </div>
     </section>
@@ -977,7 +1132,7 @@ function Footer({ lang }: { lang: Lang }) {
             href={`mailto:${tc.email}`}
             className={`
               btn-connect inline-block rounded-[2rem] text-center cursor-pointer text-[#1a1a1a]
-              bg-gradient-to-br from-[#7BC6F7] via-[#00C5CD] to-[#E1C699]
+              bg-gradient-to-br from-surf-blue via-mustard to-terracotta
             `}
           >
             <span
