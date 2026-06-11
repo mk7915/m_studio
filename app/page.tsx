@@ -728,8 +728,8 @@ function WorkVideoLinkCard({
           </span>
         </div>
         <div className="p-5 flex flex-col flex-1">
-          <h3 className="font-bold text-base leading-snug mb-2">{item.title}</h3>
-          <p className="text-[18px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+          <h3 className="font-black text-base leading-tight mb-2">{item.title}</h3>
+          <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
           <div className="flex flex-wrap gap-1.5 mt-4">
             {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
@@ -770,14 +770,10 @@ function WorkLinkCard({
             <Icon className="w-4 h-4" />
           </span>
         </div>
-        <h3
-          className={`font-black leading-tight mb-3 ${
-            featured ? "text-2xl lg:text-[2rem]" : "text-xl"
-          }`}
-        >
+        <h3 className="font-black leading-tight mb-3 text-base">
           {item.title}
         </h3>
-        <p className="text-[15px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+        <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
         <div className="flex flex-wrap gap-1.5 mt-5">
           {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
         </div>

@@ -68,20 +68,20 @@ function WorkDetailVideoProjectsContent({ detail, basePath }: { detail: WorkVide
             {t.title}
           </h1>
 
-          <p className="text-muted-foreground leading-relaxed mb-10 text-[15px]">
+          <p className="text-muted-foreground leading-relaxed mb-10 text-base">
             {t.overview}
           </p>
 
-          <h2 className="text-[10px] tracking-[0.2em] uppercase font-semibold text-primary mb-4">
+          <h2 className="text-[12px] tracking-[0.2em] uppercase font-semibold text-primary mb-4">
             {t.subheading}
           </h2>
           <ul className="space-y-5 mb-10">
             {t.projects.map((project, i) => (
               <li key={project.title} className="bento-card rounded-2xl bg-card p-5">
-                <p className="font-bold mb-3 text-sm">
+                <p className="font-bold mb-3 text-base">
                   {i + 1}. {project.title}
                 </p>
-                <p className="text-[13px] text-muted-foreground leading-relaxed mb-4">
+                <p className="text-[15px] text-muted-foreground leading-relaxed mb-4">
                   <span className="font-semibold text-foreground">{project.descriptionLabel}</span>{" "}
                   {project.description}
                 </p>
