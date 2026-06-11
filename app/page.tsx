@@ -972,18 +972,17 @@ function Footer({ lang }: { lang: Lang }) {
         </p>
 
         {/* ── Giant 3D Connect Button ── */}
-        <div ref={ref} className="reveal w-full mb-10">
+        <div ref={ref} className="reveal w-full mb-10 flex justify-center">
           <a
             href={`mailto:${tc.email}`}
             className={`
-              btn-connect block w-full rounded-[2rem] text-center cursor-pointer
-              bg-[#1a1a1a] text-white
-              dark:bg-[#f5f0e8] dark:text-[#1a1a1a]
+              btn-connect inline-block rounded-[2rem] text-center cursor-pointer text-white
+              bg-gradient-to-br from-[#FF6B6B] via-[#FF8FB1] to-[#6FA8FF]
             `}
           >
             <span
               className={`
-                block py-10 md:py-14 lg:py-16 px-6
+                block py-8 md:py-12 lg:py-14 px-10 md:px-16 lg:px-20
                 font-black leading-none tracking-tighter
                 text-[clamp(3.5rem,12vw,9rem)]
               `}
