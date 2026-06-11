@@ -274,7 +274,7 @@ function useReveal() {
 
 export function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="text-[10px] tracking-wide px-2.5 py-1 rounded-full border border-border text-muted-foreground">
+    <span className="text-[12px] tracking-wide px-2.5 py-1 rounded-full border border-border text-muted-foreground">
       {children}
     </span>
   )
@@ -289,7 +289,7 @@ export function SectionLabel({
 }) {
   return (
     <span
-      className={`text-[9px] tracking-[0.28em] uppercase font-semibold ${
+      className={`text-[11px] tracking-[0.28em] uppercase font-semibold ${
         light ? "text-primary-foreground/60" : "text-primary"
       }`}
     >
