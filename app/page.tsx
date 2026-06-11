@@ -289,7 +289,7 @@ export function SectionLabel({
 }) {
   return (
     <span
-      className={`text-[11px] tracking-[0.28em] uppercase font-semibold ${
+      className={`text-[15px] tracking-[0.28em] uppercase font-semibold ${
         light ? "text-primary-foreground/60" : "text-primary"
       }`}
     >
@@ -308,7 +308,7 @@ export function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) =
           key={l}
           onClick={() => setLang(l)}
           aria-pressed={lang === l}
-          className={`px-3 py-1.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-semibold transition-all duration-200 ${
+          className={`px-3 py-1.5 rounded-full text-[12px] tracking-[0.2em] uppercase font-semibold transition-all duration-200 ${
             lang === l
               ? "bg-background text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground"
