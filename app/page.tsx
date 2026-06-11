@@ -14,7 +14,6 @@ const content = {
   en: {
     nav: { works: "WORKS", timeline: "TIMELINE", services: "SERVICES", contact: "CONTACT" },
     hero: {
-      kicker: "OPERATIONS × IMAGINATION",
       lines: ["WORKFLOWS.", "VIDEOS.", "INTERFACES."],
       tagline: "Designing seamless automation and cinematic stories from scratch.",
       cta: "Get in Touch",
@@ -123,7 +122,6 @@ const content = {
   jp: {
     nav: { works: "実績", timeline: "キャリア", services: "サービス", contact: "お問い合わせ" },
     hero: {
-      kicker: "OPERATIONS × IMAGINATION",
       lines: ["WORKFLOWS.", "VIDEOS.", "INTERFACES."],
       tagline: "無駄のない自動化の仕組みと、心を動かす映像をゼロからデザインする。",
       cta: "お問い合わせ",
@@ -238,6 +236,13 @@ type WorkItem = {
   description: string
   tags: readonly string[]
 }
+
+const MARQUEE_ITEMS = [
+  "DESIGN. AUTOMATE. CAPTIVATE.",
+  "OPERATIONS × IMAGINATION",
+  "CX × VIDEO × WEB DEVELOPMENT",
+  "AVAILABLE FOR FREELANCE PROJECTS",
+]
 
 const toolsList = [
   "Laravel 10", "PHP", "JavaScript", "HTML5 / CSS3",
@@ -617,24 +622,54 @@ function HeroSection({ lang }: { lang: Lang }) {
         className="reveal w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_210px] gap-4 lg:gap-5"
       >
         {/* ── Main hero card ── */}
-        <div className="bento-card rounded-[2rem] bg-card p-8 md:p-12 flex flex-col justify-between min-h-[420px] lg:min-h-[520px]">
-          <SectionLabel>{t.kicker}</SectionLabel>
+        <div className="bento-card rounded-[2rem] bg-card p-8 md:p-12 lg:ml-[7.5rem] flex flex-col justify-between min-h-[420px] lg:min-h-[520px]">
+          <div className="marquee-wrap overflow-hidden -mx-8 md:-mx-12 px-8 md:px-12">
+            <div className="marquee-track">
+              {[0, 1].map((i) => (
+                <div key={i} className="flex items-center shrink-0 pr-10">
+                  {MARQUEE_ITEMS.map((item, j) => (
+                    <span key={j} className="flex items-center pr-10">
+                      <SectionLabel>{item}</SectionLabel>
+                      <span
+                        className={`mx-10 w-1.5 h-1.5 rounded-full shrink-0 ${
+                          ["bg-primary/50", "bg-surf-blue/60", "bg-mustard/60"][j % 3]
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
 
           <div className="my-8">
             <h1
               className="leading-[1.05] mb-6 font-display font-black tracking-tighter text-[clamp(3rem,7vw,6rem)]"
             >
-              {t.lines.map((line, i) => (
-                <span key={i} className="block">
-                  {line}
-                </span>
-              ))}
+              {t.lines.map((line, i) => {
+                const word = line.slice(0, -1)
+                const dot = line.slice(-1)
+                const dotColor = i === 0 ? "text-primary" : i === 2 ? "text-mustard" : ""
+                return (
+                  <span key={i} className="headline-line">
+                    <span
+                      className={`inline-block ${i === 1 ? "headline-outline" : ""}`}
+                      style={{ transitionDelay: `${i * 110}ms` }}
+                    >
+                      {word}
+                      <span className={dotColor}>{dot}</span>
+                    </span>
+                  </span>
+                )
+              })}
             </h1>
             <p
-              className={`text-muted-foreground leading-relaxed max-w-md ${
-                isJp ? "text-sm tracking-wide" : "text-[15px] font-light"
+              className={`reveal-tagline text-[15px] text-muted-foreground leading-relaxed max-w-md flex items-start gap-3 ${
+                isJp ? "tracking-wide" : "font-light"
               }`}
             >
+              <span className="mt-2 h-px w-6 shrink-0 bg-gradient-to-r from-primary via-mustard to-surf-blue" aria-hidden="true" />
               {t.tagline}
             </p>
           </div>

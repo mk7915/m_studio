@@ -124,6 +124,11 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 @media (min-width: 1024px) {
@@ -178,6 +183,77 @@ html {
 .letter-drop {
   display: inline-block;
   animation: letter-drop-in 2.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── Hero headline — kinetic mask reveal ───────────────────────────────── */
+
+.headline-line {
+  display: block;
+  overflow: hidden;
+}
+
+.headline-line > span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible .headline-line > span {
+  transform: translateY(0);
+}
+
+/* Outlined variant — solid fill on hover (desktop only) */
+.headline-outline {
+  color: transparent;
+  -webkit-text-stroke: 0.022em var(--surf-blue);
+  transition: color 0.4s ease, -webkit-text-stroke-color 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .headline-outline:hover {
+    color: var(--primary);
+    -webkit-text-stroke: 0.022em var(--primary);
+  }
+}
+
+.reveal-tagline {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+}
+
+.reveal.visible .reveal-tagline {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Kicker marquee ticker ─────────────────────────────────────────────── */
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-wrap {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
+  mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 22s linear infinite;
+}
+
+.marquee-wrap:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }
 
 /* ─── Scroll reveal ──────────────────────────────────────────────────────── */
