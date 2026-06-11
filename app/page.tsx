@@ -482,7 +482,7 @@ const HOVER_IMAGES = {
   ],
 } as const
 
-function StudioHeroSection({ lang }: { lang: Lang }) {
+function StudioHeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const [pos, setPos] = useState({ x: 0, y: 0 })
   const [popup, setPopup] = useState({ visible: false, src: "", rotation: -3 })
@@ -518,10 +518,7 @@ function StudioHeroSection({ lang }: { lang: Lang }) {
     setTimeout(() => setPopup((p) => ({ ...p, visible: false })), 2500)
   }
 
-  const isJp = lang === "jp"
-  const subcopy = isJp
-    ? "Creative Partner for Your Business"
-    : "Howdy — meet your trusted creative partner"
+  const subcopy = "Howdy — meet your trusted creative partner"
 
   const imgY = Math.max(pos.y - 220, 72)
 
@@ -532,33 +529,40 @@ function StudioHeroSection({ lang }: { lang: Lang }) {
       style={{ background: "#F4EFEA" }}
       className={`relative px-5 sm:px-10 lg:px-14 pt-8 pb-2 ${!isTouch ? "cursor-crosshair" : ""}`}
     >
-      <p
-        className={`font-hint text-base md:text-lg italic text-muted-foreground/70 mb-1 select-none ${
-          isJp ? "tracking-wide" : ""
-        }`}
-      >
+      <p className="font-hint text-base md:text-lg italic text-muted-foreground/70 mb-1 select-none">
         {subcopy}
       </p>
 
-      <h1 className="select-none leading-none font-display font-black uppercase tracking-[-0.04em] text-ocean text-[clamp(3rem,15vw,15rem)]" aria-label="STUDIO M">
+      <h1 className="select-none leading-none font-display font-black uppercase tracking-[-0.04em] text-[clamp(3rem,15vw,15rem)]" aria-label="STUDIO M">
         <span
           role="presentation"
-          className={`transition-colors duration-300 ${!isTouch ? "hover:text-primary" : ""}`}
+          className={`text-transparent transition-all duration-300 ${!isTouch ? "hover:text-ocean" : ""}`}
+          style={{ WebkitTextStroke: "0.025em var(--ocean)" }}
           onMouseEnter={() => showPopup("studio", -5)}
           onMouseLeave={hidePopup}
           onClick={() => tapPreview("studio")}
         >
-          STUDIO
+          {"STUDIO".split("").map((ch, i) => (
+            <span
+              key={i}
+              className="letter-drop transition-colors duration-300"
+              style={{ animationDelay: `${i * 220}ms` }}
+            >
+              {ch}
+            </span>
+          ))}
         </span>
         {" "}
         <span
           role="presentation"
-          className={`transition-colors duration-300 ${!isTouch ? "hover:text-primary" : ""}`}
+          className={`text-ocean transition-colors duration-300 ${!isTouch ? "hover:text-primary" : ""}`}
           onMouseEnter={() => showPopup("m", 4)}
           onMouseLeave={hidePopup}
           onClick={() => tapPreview("m")}
         >
-          M
+          <span className="letter-drop transition-colors duration-300" style={{ animationDelay: "1320ms" }}>
+            M
+          </span>
         </span>
       </h1>
 
@@ -1123,7 +1127,7 @@ export default function PortfolioPage() {
         setLang={handleSetLang}
       />
       <div style={{ paddingTop: NAV_H }}>
-        <StudioHeroSection lang={lang} />
+        <StudioHeroSection />
         <HeroSection lang={lang} />
         <WorksSection  lang={lang} />
         <TimelineSection lang={lang} />
