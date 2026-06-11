@@ -126,6 +126,12 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (min-width: 1024px) {
+  html {
+    font-size: 150%;
+  }
+}
+
 /* ─── Font switching ─────────────────────────────────────────────────────── */
 
 .lang-en { font-family: var(--font-inter), 'Inter', sans-serif; }
