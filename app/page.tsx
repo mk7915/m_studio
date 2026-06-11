@@ -66,20 +66,20 @@ const content = {
       label: "CAREER", count: "2 roles",
       items: [
         {
-          period: "2018 — 2023",
-          role: "Recruitment Consultant · Global Sales",
-          org: "Domestic & Foreign-Affiliated Firms",
+          period: "2023 — Present",
+          role: "Operations Architect, Web Developer & Video Marketer",
+          org: "Freelance Professional · M-Studio",
           description:
-            "Managed high-stakes international business negotiations and operations at both domestic and foreign-affiliated firms, with nearly 3 years of overseas experience.",
-          tags: ["International Business", "B2B Sales", "Recruitment"],
+            "Providing multi-disciplinary client solutions. Leading BtoB customer success and system migration projects for AI training platforms, developing custom web applications (Next.js/WordPress), and producing high-end video marketing content/motion graphics for global brands.",
+          tags: ["CX Architecture", "Video Marketing", "Web Development"],
         },
         {
-          period: "2023 — Present",
-          role: "Independent Freelancer · Asia",
-          org: "AI & Digital Strategy Sector",
+          period: "2017 — 2023",
+          role: "Recruitment Consultant / Overseas Recruiting Advisor",
+          org: "Corporate Career · Global Recruiting & HR Consulting",
           description:
-            "Leading CX/CS architecture for an enterprise AI training platform, driving brand video marketing campaigns, and building tailored web applications.",
-          tags: ["CX Architecture", "Video Marketing", "Web Development"],
+            "Built a strong foundation in corporate sales, executive search, and cross-border consulting. Experienced in 360-degree recruitment for global agencies in Japan, managing high-level placements in the healthcare/lifescience sectors, and supporting Japanese enterprises with overseas talent acquisition and organizational scaling while based in the Philippines and Thailand.",
+          tags: ["International Business", "B2B Sales", "Recruitment"],
         },
       ],
     },
@@ -174,20 +174,20 @@ const content = {
       label: "キャリア", count: "2件",
       items: [
         {
-          period: "2018 — 2023",
-          role: "グローバルセールス / 採用コンサルタント",
-          org: "グローバルマーケット / 企業支援",
+          period: "2023年 〜 現在",
+          role: "CXインフラ設計・Web開発・動画マーケティング",
+          org: "フリーランス · M-Studio",
           description:
-            "国内外の企業において、商談やグローバルオペレーションを主導。約3年の海外拠点をベースとしたキャリアの中で、複数マーケットのビジネス拡大に貢献。",
-          tags: ["国際ビジネス", "B2B営業", "採用支援"],
+            "複数領域での複合的なクライアントワークを展開。法人向けAI人材育成プラットフォームにおけるカスタマーサクセスやシステム移管プロジェクトをはじめ、Next.jsやWordPressを用いたWeb開発、大手・グローバル企業の動画マーケティングやAfter Effectsによるモーショングラフィックス制作まで一貫して手掛ける。",
+          tags: ["CXインフラ設計", "動画マーケティング", "Web開発"],
         },
         {
-          period: "2023 — 現在",
-          role: "独立フリーランス · アジア拠点",
-          org: "AI · デジタル戦略領域",
+          period: "2017年 〜 2023年",
+          role: "人材採用コンサルタント / 法人営業 / 海外リクルーティングアドバイザー",
+          org: "会社員時代 · グローバル人材紹介・HRコンサルティング",
           description:
-            "エンタープライズAIプラットフォームにおけるCX/CSインフラの設計を主導。同時に、ブランディング動画のマーケティング戦略や、独自のWebアプリケーション開発を推進。",
-          tags: ["CXインフラ設計", "動画マーケティング", "Web開発"],
+            "国内の大手HR企業から外資系・日系のグローバル人材紹介会社にてキャリアを構築。日本国内でのハイクラス領域（ヘルスケア・ライフサイエンス部門）における両面型コンサルティングに加え、東南アジアの海外法人を拠点に、日系企業の海外進出に伴う現地採用支援や組織基盤づくりなど、一貫してハイレベルな折衝と課題解決に従事。",
+          tags: ["国際ビジネス", "B2B営業", "採用支援"],
         },
       ],
     },
