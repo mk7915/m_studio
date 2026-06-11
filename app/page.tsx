@@ -438,14 +438,14 @@ function Header({
           <a
             key={item.href}
             href={item.href}
-            className="px-4 py-2 rounded-full text-[10px] tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="px-4 py-2 rounded-full text-[12px] tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             {item.label}
           </a>
         ))}
         <a
           href="#contact"
-          className="px-4 py-2 rounded-full text-[10px] tracking-[0.2em] bg-primary text-primary-foreground hover:bg-primary/90 transition-colors ml-2"
+          className="px-4 py-2 rounded-full text-[12px] tracking-[0.2em] bg-primary text-primary-foreground hover:bg-primary/90 transition-colors ml-2"
         >
           {t.contact}
         </a>
@@ -1103,18 +1103,28 @@ export default function PortfolioPage() {
   const [lang, setLang] = useState<Lang>("en")
   const [mobileOpen, setMobileOpen] = useState(false)
 
+  useEffect(() => {
+    const saved = localStorage.getItem("lang")
+    if (saved === "jp" || saved === "en") setLang(saved)
+  }, [])
+
+  const handleSetLang = (l: Lang) => {
+    setLang(l)
+    localStorage.setItem("lang", l)
+  }
+
   return (
     <main
       className={`min-h-screen bg-background text-foreground ${
         lang === "jp" ? "lang-jp" : "lang-en"
       }`}
     >
-      <Header lang={lang} setLang={setLang} onMenuOpen={() => setMobileOpen(true)} />
+      <Header lang={lang} setLang={handleSetLang} onMenuOpen={() => setMobileOpen(true)} />
       <MobileDrawer
         isOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
         lang={lang}
-        setLang={setLang}
+        setLang={handleSetLang}
       />
       <div style={{ paddingTop: NAV_H }}>
         <StudioHeroSection lang={lang} />

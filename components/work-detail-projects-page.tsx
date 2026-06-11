@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
@@ -36,8 +36,15 @@ function WorkDetailProjectsContent({ detail, basePath }: { detail: WorkProjectsD
   const searchParams = useSearchParams()
   const [lang, setLang] = useState<Lang>(searchParams.get("lang") === "jp" ? "jp" : "en")
 
+  useEffect(() => {
+    if (searchParams.get("lang")) return
+    const saved = localStorage.getItem("lang")
+    if (saved === "jp" || saved === "en") setLang(saved)
+  }, [searchParams])
+
   const handleSetLang = (l: Lang) => {
     setLang(l)
+    localStorage.setItem("lang", l)
     router.replace(`${basePath}?lang=${l}`, { scroll: false })
   }
 
