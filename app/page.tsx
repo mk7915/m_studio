@@ -976,8 +976,8 @@ function Footer({ lang }: { lang: Lang }) {
           <a
             href={`mailto:${tc.email}`}
             className={`
-              btn-connect inline-block rounded-[2rem] text-center cursor-pointer text-white
-              bg-gradient-to-br from-[#FF6B6B] via-[#FF8FB1] to-[#6FA8FF]
+              btn-connect inline-block rounded-[2rem] text-center cursor-pointer text-[#1a1a1a]
+              bg-gradient-to-br from-[#7BC6F7] via-[#00C5CD] to-[#E1C699]
             `}
           >
             <span

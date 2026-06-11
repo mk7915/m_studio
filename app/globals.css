@@ -199,22 +199,22 @@ html {
   .btn-connect {
     transform: translateY(0);
     box-shadow:
-      0 8px 0 oklch(0.5 0.18 330),
-      0 20px 48px oklch(0.6 0.18 280 / 0.35);
+      0 8px 0 oklch(0.45 0.12 250),
+      0 20px 48px oklch(0.6 0.1 220 / 0.3);
     transition: transform 0.12s ease, box-shadow 0.12s ease;
     user-select: none;
   }
   .btn-connect:hover {
     transform: translateY(4px);
     box-shadow:
-      0 4px 0 oklch(0.5 0.18 330),
-      0 10px 24px oklch(0.6 0.18 280 / 0.28);
+      0 4px 0 oklch(0.45 0.12 250),
+      0 10px 24px oklch(0.6 0.1 220 / 0.24);
   }
   .btn-connect:active {
     transform: translateY(8px);
     box-shadow:
-      0 0px 0 oklch(0.5 0.18 330),
-      0 4px 10px oklch(0.6 0.18 280 / 0.2);
+      0 0px 0 oklch(0.45 0.12 250),
+      0 4px 10px oklch(0.6 0.1 220 / 0.18);
   }
 }
 
