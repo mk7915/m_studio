@@ -1,16 +1,11 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { ArrowUpRight, Menu, X, Play, Zap, Film, Monitor, MessageSquare, Code2, Instagram, Github, Briefcase } from "lucide-react"
+import Link from "next/link"
+import { ArrowUpRight, Menu, X, Zap, Film, Monitor, MessageSquare, Instagram, Github, Briefcase } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 
-type Lang = "en" | "jp"
+export type Lang = "en" | "jp"
 type IconName = "Zap" | "Film" | "Monitor"
 
 // ─── Bilingual Content ────────────────────────────────────────────────────────
@@ -31,47 +26,39 @@ const content = {
     },
     works: {
       label: "SELECTED WORKS",
-      count: "5 projects",
+      count: "4 projects",
       items: [
         {
-          id: "01", type: "cx" as const, year: "2024",
-          category: "CX Architecture",
-          title: "Enterprise AI CX System",
-          description:
-            "Architected full-cycle CX/CS infrastructure for an enterprise AI training platform, reducing ticket resolution time by 40% and improving NPS across the entire support funnel.",
-          tags: ["kintone", "GAS", "Automation", "UX Design"],
-        },
-        {
-          id: "02", type: "video" as const, year: "2024",
-          category: "Video Production",
-          title: "Corporate Brand Film",
-          description:
-            "Multi-episode cinematic brand campaign driving 3× organic engagement growth for a global tech brand.",
-          tags: ["Premiere Pro", "After Effects", "Brand Direction"],
-        },
-        {
-          id: "03", type: "video" as const, year: "2023",
-          category: "Content Creation",
-          title: "Vertical SNS Series",
-          description:
-            "Monthly vertical video content strategy and production for a SaaS brand's social channels.",
-          tags: ["SNS Video", "After Effects", "Strategy"],
-        },
-        {
-          id: "04", type: "cx" as const, year: "2023",
-          category: "Operations",
-          title: "Automation Suite",
-          description:
-            "kintone + GAS workflows eliminating 15+ hours of manual operations per week across sales and support.",
-          tags: ["kintone", "GAS", "Analytics"],
-        },
-        {
-          id: "05", type: "sales" as const, year: "",
+          id: "01", type: "sales" as const, year: "",
           category: "Global Recruitment Consulting",
           title: "Cross-Border Talent Acquisition",
           description:
             "Experienced recruitment consultant operating in Japan and international markets. Specializing in end-to-end consulting from high-volume staffing operations to executive healthcare and biotech roles.",
           tags: ["Talent Acquisition", "B2B Sales", "Global Operations", "Negotiation"],
+        },
+        {
+          id: "02", type: "video" as const, year: "",
+          category: "Video Marketing & Production",
+          title: "Social Media Strategy & Content Creation",
+          description:
+            "Delivering strategic video production and marketing solutions. Experienced in short-form SNS growth for major firms, global ad campaigns, and customized high-end Motion Graphics.",
+          tags: ["Premiere Pro", "After Effects", "SNS Strategy", "Motion Graphics"],
+        },
+        {
+          id: "03", type: "web" as const, year: "",
+          category: "Web Development",
+          title: "Web Applications & WordPress Development",
+          description:
+            "Developing functional web applications and custom websites. Experienced in building responsive user interfaces, data-driven dashboards, and managing end-to-end deployment.",
+          tags: ["React", "Next.js", "WordPress", "Tailwind CSS"],
+        },
+        {
+          id: "04", type: "cx" as const, year: "",
+          category: "BtoB Customer Success",
+          title: "Customer Success & Operations",
+          description:
+            "Managing end-to-end BtoB customer success for an AI training platform. Supporting corporate clients and streamlining operations, including a smooth CRM system migration to Notion to improve communication.",
+          tags: ["Customer Success", "BtoB Support", "Notion", "Client Care"],
         },
       ] as WorkItem[],
     },
@@ -147,47 +134,39 @@ const content = {
       },
     },
     works: {
-      label: "制作実績", count: "5件",
+      label: "実績", count: "4件",
       items: [
         {
-          id: "01", type: "cx" as const, year: "2024",
-          category: "CXインフラ設計",
-          title: "エンタープライズAI CXシステム",
-          description:
-            "エンタープライズAIトレーニングプラットフォームのCX/CSインフラを一気通貫で設計・構築。チケット解決時間40%短縮・NPS向上を実現。",
-          tags: ["kintone", "GAS", "自動化", "UX設計"],
-        },
-        {
-          id: "02", type: "video" as const, year: "2024",
-          category: "映像制作",
-          title: "コーポレートブランドフィルム",
-          description:
-            "グローバルテック企業のマルチエピソード型ブランドキャンペーン。オーガニックエンゲージメント3倍増を達成。",
-          tags: ["Premiere Pro", "After Effects", "ブランド演出"],
-        },
-        {
-          id: "03", type: "video" as const, year: "2023",
-          category: "コンテンツ制作",
-          title: "縦型SNSシリーズ",
-          description:
-            "SaaSブランドのSNSチャンネル向け、月次縦型映像コンテンツの戦略策定から制作まで一貫担当。",
-          tags: ["SNS動画", "After Effects", "コンテンツ戦略"],
-        },
-        {
-          id: "04", type: "cx" as const, year: "2023",
-          category: "オペレーション",
-          title: "業務プロセス自動化",
-          description:
-            "kintone + GASによるワークフロー自動化で、営業・サポート横断の手動作業を週15時間以上削減。",
-          tags: ["kintone", "GAS", "データ分析"],
-        },
-        {
-          id: "05", type: "sales" as const, year: "",
+          id: "01", type: "sales" as const, year: "",
           category: "人材採用コンサルティング",
           title: "グローバル人材採用コンサルティング",
           description:
-            "日本および海外市場における人材採用コンサルタント。大手派遣領域から、専門性の高い外資ハイクラス・ヘルスケア（バイオ・研究職）領域まで、企業と求職者の双方から組織の課題解決を支援。",
+            "日本および海外市場における人材採用コンサルタント。派遣領域から、専門性の高い外資ハイクラス・ヘルスケア（バイオ・研究職）領域まで、企業と求職者の双方から組織の課題解決を支援。",
           tags: ["採用コンサルティング", "法人営業", "グローバル環境", "折衝力"],
+        },
+        {
+          id: "02", type: "video" as const, year: "",
+          category: "動画マーケティング・制作",
+          title: "SNS動画戦略 ＆ クリエイティブ制作",
+          description:
+            "ビジネスの成約や認知拡大を見据えた動画制作・マーケティング。大手法律事務所のSNS運用支援、海外大手メディアの広告制作に加え、After Effectsを用いた高品質なモーショングラフィックス制作を展開。",
+          tags: ["Premiere Pro", "After Effects", "SNSマーケティング", "動画編集"],
+        },
+        {
+          id: "03", type: "web" as const, year: "",
+          category: "Web開発・プログラミング",
+          title: "Webアプリケーション開発 ＆ カスタムサイト構築",
+          description:
+            "モダンなフレームワークを用いたWebアプリ開発から、WordPressによるコーポレートサイト構築まで幅広く担当。デザインの実装、データベース連携、Vercel等へのデプロイまで一貫して対応可能。",
+          tags: ["React", "Next.js", "WordPress", "Tailwind CSS"],
+        },
+        {
+          id: "04", type: "cx" as const, year: "",
+          category: "BtoB カスタマーサクセス",
+          title: "カスタマーサクセス ＆ 伴走支援",
+          description:
+            "法人向けAI人材育成プラットフォームにおけるカスタマーサクセス業務。企業の受講サポートから運営まで幅広く担当し、よりスムーズな顧客対応のためにNotionへの案件管理移行なども並行して推進。",
+          tags: ["カスタマーサクセス", "法人サポート", "Notion", "顧客対応"],
         },
       ] as WorkItem[],
     },
@@ -252,7 +231,7 @@ const content = {
 
 type WorkItem = {
   id: string
-  type: "cx" | "video" | "sales"
+  type: "cx" | "video" | "sales" | "web"
   year: string
   category: string
   title: string
@@ -267,7 +246,7 @@ const toolsList = [
   "Microsoft Teams", "Zoom", "Spreadsheet Analytics",
 ]
 
-const NAV_H = 60
+export const NAV_H = 60
 
 // ─── Scroll reveal hook ───────────────────────────────────────────────────────
 
@@ -293,7 +272,7 @@ function useReveal() {
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
 
-function Tag({ children }: { children: React.ReactNode }) {
+export function Tag({ children }: { children: React.ReactNode }) {
   return (
     <span className="text-[10px] tracking-wide px-2.5 py-1 rounded-full border border-border text-muted-foreground">
       {children}
@@ -301,7 +280,7 @@ function Tag({ children }: { children: React.ReactNode }) {
   )
 }
 
-function SectionLabel({
+export function SectionLabel({
   children,
   light = false,
 }: {
@@ -310,7 +289,7 @@ function SectionLabel({
 }) {
   return (
     <span
-      className={`text-[10px] tracking-[0.32em] uppercase font-semibold ${
+      className={`text-[9px] tracking-[0.28em] uppercase font-semibold ${
         light ? "text-primary-foreground/60" : "text-primary"
       }`}
     >
@@ -321,7 +300,7 @@ function SectionLabel({
 
 // ─── Language Toggle ──────────────────────────────────────────────────────────
 
-function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
+export function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   return (
     <div className="flex items-center gap-0.5 bg-muted rounded-full p-0.5">
       {(["en", "jp"] as Lang[]).map((l) => (
@@ -711,203 +690,93 @@ function HeroSection({ lang }: { lang: Lang }) {
 
 // ─── Works — individual card components ───────────────────────────────────────
 
-function VideoWorkCard({ item, featured }: { item: WorkItem; featured?: boolean }) {
-  const ref = useReveal()
-  const gradient =
-    item.id === "02"
-      ? "bg-gradient-to-br from-terracotta to-mustard"
-      : "bg-gradient-to-br from-surf-blue to-terracotta/70"
+// ─── Work Video Link Card — playable video preview that links to a detail page ─
 
-  return (
-    <div
-      ref={ref}
-      className={`reveal bento-card rounded-[1.75rem] overflow-hidden bg-card flex flex-col hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out ${
-        featured ? "sm:col-span-2 lg:col-span-1" : ""
-      }`}
-    >
-      <div className={`relative flex items-center justify-center aspect-[4/3] ${gradient}`}>
-        <div className="w-12 h-12 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center">
-          <Play className="w-5 h-5 text-white fill-white ml-0.5" />
-        </div>
-        <span className="absolute top-4 left-4 text-[9px] tracking-[0.3em] uppercase text-white/75">
-          {item.category}
-        </span>
-        <span className="absolute top-4 right-4 text-[9px] text-white/60">{item.year}</span>
-      </div>
-      <div className="p-5 flex flex-col flex-1">
-        {/* Title row with Play icon badge */}
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="font-bold text-base leading-snug flex-1">{item.title}</h3>
-          <span className="shrink-0 w-7 h-7 rounded-full bg-terracotta/10 flex items-center justify-center mt-0.5">
-            <Play className="w-3.5 h-3.5 text-terracotta fill-terracotta ml-0.5" />
-          </span>
-        </div>
-        <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
-        <div className="flex flex-wrap gap-1.5 mt-4">
-          {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function CXWorkCard({ item, featured }: { item: WorkItem; featured?: boolean }) {
-  const ref = useReveal()
-  const isOps = item.category.toLowerCase().includes("operat") ||
-                item.category === "オペレーション"
-  const Icon = isOps ? Code2 : MessageSquare
-  const iconColor = isOps ? "text-mustard bg-mustard/15" : "text-surf-blue bg-surf-blue/15"
-
-  return (
-    <div
-      ref={ref}
-      className={`reveal bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out ${
-        featured ? "sm:col-span-2 lg:col-span-2" : ""
-      }`}
-    >
-      {/* Header row: category + year left, icon right */}
-      <div className="flex items-start justify-between mb-5">
-        <div>
-          <SectionLabel>{item.category}</SectionLabel>
-          <p className="text-[10px] text-muted-foreground mt-1">{item.year}</p>
-        </div>
-        <span className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center ${iconColor}`}>
-          <Icon className="w-4 h-4" />
-        </span>
-      </div>
-      <h3
-        className={`font-black leading-tight mb-3 ${
-          featured ? "text-2xl lg:text-[2rem]" : "text-xl"
-        }`}
-      >
-        {item.title}
-      </h3>
-      <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
-      <div className="flex flex-wrap gap-1.5 mt-5">
-        {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-      </div>
-    </div>
-  )
-}
-
-// ─── Recruitment Consulting — bilingual detail content ────────────────────────
-
-const recruitmentDetail = {
-  title: "01 | Global Recruitment Consulting / 人材採用コンサルティング",
-  en: {
-    flag: "🇺🇸",
-    heading: "Overview & Experience",
-    overview:
-      "Operated as a professional recruitment consultant across Japan and Southeast Asia, delivering tailored talent acquisition solutions across various organizational levels and industries.",
-    subheading: "Core Experience",
-    items: [
-      {
-        label: "Japan (Nagoya & Tokyo):",
-        text: "Managed end-to-end recruitment in the temporary staffing sector, focusing on the IT, food/beverage, and real estate industries to resolve chronic labor shortages and support client operations.",
-      },
-      {
-        label: "Overseas (Philippines & Thailand):",
-        text: "Worked as a Recruiting Advisor (RA) to support companies with local and expatriate hiring, navigating diverse cultural environments to build strong organizational foundations.",
-      },
-      {
-        label: "Global Agency (Michael Page):",
-        text: "Specialized in the Healthcare & Life Sciences division. Handled dual-sided consulting for highly specialized positions, including executive and R&D/biotech roles for global enterprises.",
-      },
-    ],
-  },
-  jp: {
-    flag: "🇯🇵",
-    heading: "概要と実績",
-    overview:
-      "日本および海外（東南アジア）を舞台に、多様な雇用形態やレイヤーにおける人材採用・組織課題の解決に従事。新規開拓からマッチング創出まで一貫して伴走しました。",
-    subheading: "主な実績・経験",
-    items: [
-      {
-        label: "日本（名古屋・東京）：",
-        text: "大手派遣領域にてIT、食品飲料、不動産業界を中心に担当。新規クライアントの開拓から、現場スタッフの就業フォローまで一貫して行い、現場のオペレーション改善に貢献。",
-      },
-      {
-        label: "海外（フィリピン・タイ）：",
-        text: "リクルーティングアドバイザー（RA）として、現地採用や日本人採用をサポート。文化や労働観が異なる環境下で、組織の基盤となる人材マッチングを支援。",
-      },
-      {
-        label: "外資ハイクラス（マイケル・ペイジ）：",
-        text: "ヘルスケア・ライフサイエンス部門にて、外資系企業のバイオ・研究職といった専門性の高いポジションを担当。企業・求職者の両面型コンサルタントとして高度な折衝を経験。",
-      },
-    ],
-  },
-} as const
-
-function RecruitmentDetailDialog({
-  open, onOpenChange,
+function WorkVideoLinkCard({
+  item, lang, featured, href, videoSrc,
 }: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  item: WorkItem
+  lang: Lang
+  featured?: boolean
+  href: string
+  videoSrc: string
 }) {
-  const sides = [recruitmentDetail.en, recruitmentDetail.jp]
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto rounded-[1.5rem]">
-        <DialogHeader>
-          <DialogTitle className="text-base lg:text-lg font-black tracking-tight pr-6">
-            {recruitmentDetail.title}
-          </DialogTitle>
-        </DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-2">
-          {sides.map((side) => (
-            <div key={side.flag}>
-              <h4 className="flex items-center gap-2 text-sm font-bold mb-2">
-                <span className="text-lg leading-none">{side.flag}</span>
-                {side.heading}
-              </h4>
-              <p className="text-[13px] text-muted-foreground leading-relaxed mb-4">
-                {side.overview}
-              </p>
-              <h5 className="text-[10px] tracking-[0.2em] uppercase font-semibold text-primary mb-2">
-                {side.subheading}
-              </h5>
-              <ul className="space-y-3">
-                {side.items.map((it) => (
-                  <li key={it.label} className="text-[13px] leading-relaxed">
-                    <span className="font-bold">{it.label}</span>{" "}
-                    <span className="text-muted-foreground">{it.text}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-// ─── Sales / Recruitment Work Card ─────────────────────────────────────────────
-
-function SalesWorkCard({ item, lang }: { item: WorkItem; lang: Lang }) {
   const ref = useReveal()
-  const [open, setOpen] = useState(false)
   const isJp = lang === "jp"
 
   return (
-    <div ref={ref} className="reveal">
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={() => setOpen(true)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") setOpen(true)
-        }}
-        className="bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col h-full cursor-pointer hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out"
+    <div
+      ref={ref}
+      className={`reveal ${featured ? "sm:col-span-2 lg:col-span-1" : ""}`}
+    >
+      <Link
+        href={`${href}?lang=${lang}`}
+        className="bento-card rounded-[1.75rem] overflow-hidden bg-card flex flex-col h-full hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out"
+      >
+        <div className="relative aspect-[4/3] bg-muted">
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src={videoSrc}
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          <span className="absolute top-4 left-4 text-[9px] tracking-[0.3em] uppercase text-white/75">
+            {item.category}
+          </span>
+        </div>
+        <div className="p-5 flex flex-col flex-1">
+          <h3 className="font-bold text-base leading-snug mb-2">{item.title}</h3>
+          <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
+          <div className="flex flex-wrap gap-1.5 mt-4">
+            {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          </div>
+          <span className="inline-flex items-center gap-1 mt-4 text-[11px] font-semibold text-primary">
+            {isJp ? "詳細を見る" : "View Details"}
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+      </Link>
+    </div>
+  )
+}
+
+// ─── Work Link Card — links through to a dedicated detail page ────────────────
+
+function WorkLinkCard({
+  item, lang, featured, href, icon: Icon, iconColor,
+}: {
+  item: WorkItem
+  lang: Lang
+  featured?: boolean
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+  iconColor: string
+}) {
+  const ref = useReveal()
+  const isJp = lang === "jp"
+
+  return (
+    <div ref={ref} className={`reveal ${featured ? "sm:col-span-2 lg:col-span-2" : ""}`}>
+      <Link
+        href={`${href}?lang=${lang}`}
+        className="bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col h-full hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out"
       >
         <div className="flex items-start justify-between mb-5">
           <SectionLabel>{item.category}</SectionLabel>
-          <span className="shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-terracotta bg-terracotta/15">
-            <Briefcase className="w-4 h-4" />
+          <span className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center ${iconColor}`}>
+            <Icon className="w-4 h-4" />
           </span>
         </div>
-        <h3 className="font-black leading-tight mb-3 text-xl">{item.title}</h3>
+        <h3
+          className={`font-black leading-tight mb-3 ${
+            featured ? "text-2xl lg:text-[2rem]" : "text-xl"
+          }`}
+        >
+          {item.title}
+        </h3>
         <p className="text-[13px] text-muted-foreground leading-relaxed flex-1">{item.description}</p>
         <div className="flex flex-wrap gap-1.5 mt-5">
           {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
@@ -916,8 +785,7 @@ function SalesWorkCard({ item, lang }: { item: WorkItem; lang: Lang }) {
           {isJp ? "詳細を見る" : "View Details"}
           <ArrowUpRight className="w-3.5 h-3.5" />
         </span>
-      </div>
-      <RecruitmentDetailDialog open={open} onOpenChange={setOpen} />
+      </Link>
     </div>
   )
 }
@@ -937,11 +805,26 @@ function WorksSection({ lang }: { lang: Lang }) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-          <CXWorkCard   item={t.items[0]} featured />
-          <VideoWorkCard item={t.items[1]} />
-          <VideoWorkCard item={t.items[2]} />
-          <CXWorkCard   item={t.items[3]} />
-          <SalesWorkCard item={t.items[4]} lang={lang} />
+          <WorkLinkCard
+            item={t.items[0]} lang={lang} featured
+            href="/works/recruitment-consulting"
+            icon={Briefcase} iconColor="text-terracotta bg-terracotta/15"
+          />
+          <WorkVideoLinkCard
+            item={t.items[1]} lang={lang}
+            href="/works/video-marketing"
+            videoSrc="/videos/video-marketing-reel.mp4"
+          />
+          <WorkVideoLinkCard
+            item={t.items[2]} lang={lang}
+            href="/works/web-development"
+            videoSrc="/videos/web-dev-reel.mp4"
+          />
+          <WorkLinkCard
+            item={t.items[3]} lang={lang} featured
+            href="/works/customer-success"
+            icon={MessageSquare} iconColor="text-surf-blue bg-surf-blue/15"
+          />
         </div>
       </div>
     </section>
