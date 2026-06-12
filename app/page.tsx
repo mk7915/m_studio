@@ -18,9 +18,8 @@ const content = {
       tagline: "Designing seamless automation and cinematic stories from scratch.",
       cta: "Get in Touch",
       cards: {
-        status:   { label: "STATUS",    value: "Available",      sub: "Open to projects" },
-        location: { label: "BASED IN",  value: "Asia / Remote" },
-        focus:    { label: "FOCUS",     items: ["CX Architecture", "Video Marketing", "Web Development", "Strategy"] },
+        status:   { label: "STATUS",      value: "Open for Work", sub: "Accepting new projects" },
+        location: { label: "LOCATION",    value: "Asia / Remote" },
       },
     },
     works: {
@@ -122,13 +121,12 @@ const content = {
   jp: {
     nav: { works: "実績", timeline: "キャリア", services: "サービス", contact: "お問い合わせ" },
     hero: {
-      lines: ["WORKFLOWS.", "VIDEOS.", "INTERFACES."],
+      lines: ["仕組みを築く", "心を動かす", "繋がりをデザインする"],
       tagline: "無駄のない自動化の仕組みと、心を動かす映像をゼロからデザインする。",
       cta: "お問い合わせ",
       cards: {
-        status:   { label: "ステータス", value: "受付中",         sub: "案件お受けします" },
-        location: { label: "拠点",       value: "アジア / リモート" },
-        focus:    { label: "専門領域",   items: ["CX設計", "動画マーケティング", "Web開発", "戦略立案"] },
+        status:   { label: "STATUS",   value: "Open for Work", sub: "新規案件受付中！" },
+        location: { label: "LOCATION", value: "Asia / Remote" },
       },
     },
     works: {
@@ -139,7 +137,7 @@ const content = {
           category: "人材採用コンサルティング",
           title: "グローバル人材採用コンサルティング",
           description:
-            "日本および海外市場における人材採用コンサルタント。派遣領域から、専門性の高い外資ハイクラス・ヘルスケア（バイオ・研究職）領域まで、企業と求職者の双方から組織の課題解決を支援。",
+            "日本および海外市場における人材採用コンサルタント。派遣領域から、専門性の高い外資ハイクラス・ヘルスケア領域まで、企業と求職者の双方から組織の課題解決を支援。",
           tags: ["採用コンサルティング", "法人営業", "グローバル環境", "折衝力"],
         },
         {
@@ -619,10 +617,10 @@ function HeroSection({ lang }: { lang: Lang }) {
     >
       <div
         ref={ref}
-        className="reveal w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_210px] gap-4 lg:gap-5"
+        className="reveal w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-4 lg:gap-5"
       >
         {/* ── Main hero card ── */}
-        <div className="bento-card rounded-[2rem] bg-card p-8 md:p-12 lg:ml-[7.5rem] flex flex-col justify-between min-h-[420px] lg:min-h-[520px]">
+        <div className="bento-card rounded-[2rem] bg-card p-8 md:p-12 flex flex-col justify-between min-h-[420px] lg:min-h-[520px] min-w-0">
           <div className="marquee-wrap overflow-hidden -mx-8 md:-mx-12 px-8 md:px-12">
             <div className="marquee-track">
               {[0, 1].map((i) => (
@@ -645,7 +643,11 @@ function HeroSection({ lang }: { lang: Lang }) {
 
           <div className="my-8">
             <h1
-              className="leading-[1.05] mb-6 font-display font-black tracking-tighter text-[clamp(3rem,7vw,6rem)]"
+              className={`leading-[1.05] mb-6 font-display font-black tracking-tighter ${
+                isJp
+                  ? "text-[clamp(1.5rem,8vw,4rem)] sm:text-[clamp(2rem,5vw,4.25rem)]"
+                  : "text-[clamp(2rem,11vw,6rem)] sm:text-[clamp(3rem,7vw,6rem)]"
+              }`}
             >
               {t.lines.map((line, i) => {
                 const word = line.slice(0, -1)
@@ -694,32 +696,23 @@ function HeroSection({ lang }: { lang: Lang }) {
 
         {/* ── Right info cards ── */}
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 lg:gap-5">
-          <div className="bento-card rounded-[1.5rem] bg-primary p-5 flex flex-col justify-between">
-            <SectionLabel light>{t.cards.status.label}</SectionLabel>
-            <div className="mt-3">
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary-foreground shrink-0" />
-                <span className="text-sm font-bold text-primary-foreground">{t.cards.status.value}</span>
-              </div>
+          <div className="bento-card rounded-[1.5rem] bg-primary p-5 flex flex-col justify-between min-h-[150px] lg:min-h-[160px]">
+            <div className="flex items-center justify-between">
+              <SectionLabel light>{t.cards.status.label}</SectionLabel>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-primary-foreground opacity-60 animate-ping" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary-foreground" />
+              </span>
+            </div>
+            <div>
+              <p className="text-2xl font-black tracking-tight text-primary-foreground">{t.cards.status.value}</p>
               <p className="text-[11px] text-primary-foreground/65 mt-1">{t.cards.status.sub}</p>
             </div>
           </div>
 
-          <div className="bento-card rounded-[1.5rem] bg-surf-blue/20 p-5 flex flex-col justify-between">
+          <div className="bento-card rounded-[1.5rem] bg-surf-blue/20 p-5 flex flex-col justify-between min-h-[150px] lg:min-h-[160px]">
             <SectionLabel>{t.cards.location.label}</SectionLabel>
-            <p className="text-sm font-semibold mt-3">{t.cards.location.value}</p>
-          </div>
-
-          <div className="hidden lg:flex bento-card rounded-[1.5rem] bg-mustard/25 p-5 flex-col">
-            <SectionLabel>{t.cards.focus.label}</SectionLabel>
-            <ul className="mt-3 space-y-1.5">
-              {t.cards.focus.items.map((item, i) => (
-                <li key={i} className="text-[11px] font-medium flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-foreground/40 shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <p className="text-2xl font-black tracking-tight">{t.cards.location.value}</p>
           </div>
         </div>
       </div>
