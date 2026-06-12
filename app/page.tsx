@@ -82,32 +82,31 @@ const content = {
       ],
     },
     services: {
-      label: "CAPABILITIES", count: "3 services",
+      label: "CAPABILITIES", subtitle: "What I Can Do", count: "3 services",
       items: [
         {
           number: "01", icon: "Zap" as IconName,
-          title: "CX & Operations Architecture",
-          description:
-            "Optimizing user journeys, kintone ecosystem management, GAS automation, and spreadsheet data analytics.",
-          tags: ["UX Journey Design", "kintone", "GAS Automation", "Data Analytics"],
+          title: "Growth & Sales Consultation",
+          catch:
+            "A hands-on partner deeply committed to driving business growth, from strategy to execution.",
+          href: "/services/growth-sales-consultation",
         },
         {
           number: "02", icon: "Film" as IconName,
-          title: "Digital Content Creation",
-          description:
-            "High-end corporate video production, cinematic editing using Premiere Pro / After Effects, and vertical SNS content optimization.",
-          tags: ["Premiere Pro", "After Effects", "SNS Video", "Corporate Film"],
+          title: "High-End Motion & Brand Identity",
+          catch:
+            "High-end visual storytelling utilizing After Effects to move hearts, inspired by Apple's iconic style.",
+          href: "/services/motion-brand-identity",
         },
         {
           number: "03", icon: "Monitor" as IconName,
-          title: "Web Development",
-          description:
-            "Building scalable apps and systems using HTML5/CSS3, JavaScript, PHP, and Laravel 10.",
-          tags: ["Laravel 10", "PHP", "JavaScript", "HTML5 / CSS3"],
+          title: "Application & Operations Development",
+          catch:
+            "Bringing ideas to life beautifully with technology, leveraging PHP/Laravel, JavaScript, and GAS.",
+          href: "/services/app-operations-development",
         },
       ],
     },
-    tools: { label: "TECH STACK", count: "14 tools" },
     contact: {
       label: "CONTACT",
       headline: ["Ready to solve", "your next challenge."],
@@ -188,32 +187,31 @@ const content = {
       ],
     },
     services: {
-      label: "サービス", count: "3サービス",
+      label: "CAPABILITIES", subtitle: "提供価値", count: "3サービス",
       items: [
         {
           number: "01", icon: "Zap" as IconName,
-          title: "CX & オペレーション設計",
-          description:
-            "ユーザージャーニー最適化、kintoneエコシステム管理、GAS自動化、スプレッドシートデータ分析。",
-          tags: ["UXジャーニー設計", "kintone", "GAS自動化", "データ分析"],
+          title: "Growth & Sales Consultation",
+          catch:
+            "戦略立案から現場の実行まで、事業成長に深くコミットする伴走型パートナー。",
+          href: "/services/growth-sales-consultation",
         },
         {
           number: "02", icon: "Film" as IconName,
-          title: "デジタルコンテンツ制作",
-          description:
-            "ハイエンド企業動画制作、Adobe Premiere Pro / After Effectsによる映像編集、SNS縦型コンテンツ最適化。",
-          tags: ["Premiere Pro", "After Effects", "SNS動画", "企業PV"],
+          title: "High-End Motion & Brand Identity",
+          catch:
+            "After Effectsを駆使し、AppleのCMのように見る人の感情を動かすハイエンドな映像表現。",
+          href: "/services/motion-brand-identity",
         },
         {
           number: "03", icon: "Monitor" as IconName,
-          title: "Web開発 & エンジニアリング",
-          description:
-            "HTML5/CSS3、JavaScript、PHP、Laravel 10を用いたスケーラブルなアプリケーション・システム構築。",
-          tags: ["Laravel 10", "PHP", "JavaScript", "HTML5 / CSS3"],
+          title: "Application & Operations Development",
+          catch:
+            "PHP/Laravel、JavaScript、GASを用い、課題をテクノロジーで美しく形に。",
+          href: "/services/app-operations-development",
         },
       ],
     },
-    tools: { label: "技術スタック", count: "14ツール" },
     contact: {
       label: "お問い合わせ",
       headline: ["次の課題を、", "共に解決しましょう。"],
@@ -240,13 +238,6 @@ const MARQUEE_ITEMS = [
   "OPERATIONS × IMAGINATION",
   "CX × VIDEO × WEB DEVELOPMENT",
   "AVAILABLE FOR FREELANCE PROJECTS",
-]
-
-const toolsList = [
-  "Laravel 10", "PHP", "JavaScript", "HTML5 / CSS3",
-  "Google Apps Script", "kintone", "Adobe Premiere Pro",
-  "After Effects", "Canva", "Slack", "Discord",
-  "Microsoft Teams", "Zoom", "Spreadsheet Analytics",
 ]
 
 export const NAV_H = 60
@@ -422,11 +413,11 @@ function Header({
       }`}
     >
       {/* Logo */}
-      <a href="#" className="flex items-center gap-2.5 mr-auto">
-        <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center shrink-0">
+      <a href="#" className="group flex items-center gap-2.5 mr-auto">
+        <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center shrink-0 transition-colors duration-200 group-hover:bg-terracotta">
           <span className="text-[11px] font-black text-primary-foreground leading-none">M</span>
         </div>
-        <span className="text-[11px] tracking-[0.25em] font-semibold hidden sm:block">
+        <span className="text-[11px] tracking-[0.25em] font-semibold hidden sm:block transition-colors duration-200 group-hover:text-primary">
           STUDIO M
         </span>
       </a>
@@ -441,14 +432,14 @@ function Header({
           <a
             key={item.href}
             href={item.href}
-            className="px-4 py-2 rounded-full text-[12px] tracking-[0.2em] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="px-4 py-2 rounded-full text-[12px] tracking-[0.2em] text-muted-foreground hover:text-primary hover:bg-muted transition-colors duration-200"
           >
             {item.label}
           </a>
         ))}
         <a
           href="#contact"
-          className="px-4 py-2 rounded-full text-[12px] tracking-[0.2em] bg-primary text-primary-foreground hover:bg-primary/90 transition-colors ml-2"
+          className="px-4 py-2 rounded-full text-[12px] tracking-[0.2em] bg-primary text-primary-foreground hover:bg-terracotta transition-colors duration-200 ml-2"
         >
           {t.contact}
         </a>
@@ -529,8 +520,7 @@ function StudioHeroSection() {
     <section
       ref={sectionRef}
       id="studio-hero"
-      style={{ background: "#F4EFEA" }}
-      className={`relative px-5 sm:px-10 lg:px-14 pt-8 pb-2 ${!isTouch ? "cursor-crosshair" : ""}`}
+      className={`relative bg-background px-5 sm:px-10 lg:px-14 pt-8 pb-2 ${!isTouch ? "cursor-crosshair" : ""}`}
     >
       <p className="font-hint text-base md:text-lg italic text-muted-foreground/70 mb-1 select-none">
         {subcopy}
@@ -612,8 +602,8 @@ function HeroSection({ lang }: { lang: Lang }) {
 
   return (
     <section
-      style={{ minHeight: `calc(100svh - ${NAV_H}px)`, background: "#F4EFEA" }}
-      className="flex items-center px-5 sm:px-8 lg:px-12 pt-4 pb-8"
+      style={{ minHeight: `calc(100svh - ${NAV_H}px)` }}
+      className="flex items-center bg-background px-5 sm:px-8 lg:px-12 pt-4 pb-8"
     >
       <div
         ref={ref}
@@ -861,10 +851,18 @@ function WorksSection({ lang }: { lang: Lang }) {
 
 // ─── Timeline — individual card ───────────────────────────────────────────────
 
+type TimelineItem = {
+  period: string
+  role: string
+  org: string
+  description: string
+  tags: readonly string[]
+}
+
 function TimelineCard({
   item, isJp, delay,
 }: {
-  item: (typeof content.en.timeline.items)[number]
+  item: TimelineItem
   isJp: boolean
   delay: number
 }) {
@@ -921,33 +919,44 @@ const iconMap: Record<IconName, React.ComponentType<{ className?: string }>> = {
 
 const serviceBg = ["bg-card", "bg-mustard/20", "bg-surf-blue/15"]
 
+type ServiceItem = {
+  number: string
+  icon: IconName
+  title: string
+  catch: string
+  href: string
+}
+
 function ServiceCard({
-  svc, index, isJp,
+  svc, index, lang, isJp,
 }: {
-  svc: (typeof content.en.services.items)[number]
+  svc: ServiceItem
   index: number
+  lang: Lang
   isJp: boolean
 }) {
   const ref = useReveal()
   const Icon = iconMap[svc.icon]
 
   return (
-    <div
-      ref={ref}
-      className={`reveal bento-card rounded-[1.75rem] ${serviceBg[index]} p-7 flex flex-col`}
-      style={{ transitionDelay: `${index * 90}ms` }}
-    >
-      <div className="flex items-start justify-between mb-6">
-        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-          <Icon className="w-5 h-5 text-primary" />
+    <div ref={ref} className="reveal h-full" style={{ transitionDelay: `${index * 90}ms` }}>
+      <Link
+        href={`${svc.href}?lang=${lang}`}
+        className={`bento-card rounded-[1.75rem] ${serviceBg[index]} p-7 flex flex-col h-full hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ease-in-out`}
+      >
+        <div className="flex items-start justify-between mb-6">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Icon className="w-5 h-5 text-primary" />
+          </div>
+          <span className="text-[10px] tracking-widest text-muted-foreground">{svc.number}</span>
         </div>
-        <span className="text-[10px] tracking-widest text-muted-foreground">{svc.number}</span>
-      </div>
-      <h3 className={`text-base mb-3 ${isJp ? "font-black tracking-normal" : "font-bold tracking-wide"}`}>{svc.title}</h3>
-      <p className="text-[15px] text-muted-foreground leading-relaxed flex-1">{svc.description}</p>
-      <div className="flex flex-wrap gap-1.5 mt-5">
-        {svc.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-      </div>
+        <h3 className={`text-base mb-3 ${isJp ? "font-black tracking-normal" : "font-bold tracking-wide"}`}>{svc.title}</h3>
+        <p className="text-[15px] text-muted-foreground leading-relaxed flex-1">{svc.catch}</p>
+        <span className="inline-flex items-center gap-1 mt-5 text-[11px] font-semibold text-primary">
+          {isJp ? "詳細を見る" : "View Details"}
+          <ArrowUpRight className="w-3.5 h-3.5" />
+        </span>
+      </Link>
     </div>
   )
 }
@@ -955,45 +964,21 @@ function ServiceCard({
 function ServicesSection({ lang }: { lang: Lang }) {
   const t = content[lang].services
   const headRef = useReveal()
+  const isJp = lang === "jp"
 
   return (
     <section id="services" className="px-5 sm:px-8 lg:px-12 py-20 lg:py-28">
       <div className="max-w-6xl mx-auto">
         <div ref={headRef} className="reveal flex items-baseline justify-between mb-8">
-          <SectionLabel>{t.label}</SectionLabel>
+          <div>
+            <SectionLabel>{t.label}</SectionLabel>
+            <p className="text-[12px] text-muted-foreground tracking-wide mt-1.5">{t.subtitle}</p>
+          </div>
           <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
           {t.items.map((svc, i) => (
-            <ServiceCard key={i} svc={svc} index={i} isJp={lang === "jp"} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ─── Tools Section ────────────────────────────────────────────────────────────
-
-function ToolsSection({ lang }: { lang: Lang }) {
-  const t = content[lang].tools
-  const ref = useReveal()
-
-  return (
-    <section id="tools" className="px-5 sm:px-8 lg:px-12 py-20 lg:py-28 bg-muted/40">
-      <div className="max-w-6xl mx-auto">
-        <div ref={ref} className="reveal flex items-baseline justify-between mb-8">
-          <SectionLabel>{t.label}</SectionLabel>
-          <span className="text-[10px] text-muted-foreground tracking-widest">{t.count}</span>
-        </div>
-        <div className="flex flex-wrap gap-2.5">
-          {toolsList.map((tool, i) => (
-            <span
-              key={i}
-              className="bento-card px-4 py-2.5 rounded-full bg-card border border-border/60 text-[12px] font-medium cursor-default hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
-            >
-              {tool}
-            </span>
+            <ServiceCard key={i} svc={svc} index={i} lang={lang} isJp={isJp} />
           ))}
         </div>
       </div>
@@ -1065,7 +1050,7 @@ function Footer({ lang }: { lang: Lang }) {
             {/* Email */}
             <a
               href={`mailto:${tc.email}`}
-              className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-primary transition-colors duration-200"
             >
               {tc.email}
               <ArrowUpRight className="w-3 h-3 opacity-50" />
@@ -1160,7 +1145,6 @@ export default function PortfolioPage() {
         <WorksSection  lang={lang} />
         <TimelineSection lang={lang} />
         <ServicesSection lang={lang} />
-        <ToolsSection  lang={lang} />
         <Footer        lang={lang} />
       </div>
     </main>
