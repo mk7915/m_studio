@@ -748,6 +748,9 @@ function WorkVideoLinkCard({
           <span className="absolute top-4 left-4 text-[9px] tracking-[0.3em] uppercase text-white/75">
             {item.category}
           </span>
+          <span className="absolute top-5 right-6 text-5xl lg:text-6xl font-black text-mustard leading-none select-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]">
+            {item.id}
+          </span>
         </div>
         <div className="p-5 flex flex-col flex-1">
           <h3 className="font-black text-base leading-tight mb-2">{item.title}</h3>
@@ -784,8 +787,11 @@ function WorkLinkCard({
     <div ref={ref} className={`reveal ${featured ? "sm:col-span-2 lg:col-span-2" : ""}`}>
       <Link
         href={`${href}?lang=${lang}`}
-        className="bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col h-full hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out"
+        className="relative bento-card rounded-[1.75rem] bg-card p-6 lg:p-8 flex flex-col h-full overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-in-out"
       >
+        <span className="absolute bottom-4 right-6 text-6xl lg:text-7xl font-black text-mustard/15 leading-none select-none pointer-events-none">
+          {item.id}
+        </span>
         <div className="flex items-start justify-between mb-5">
           <SectionLabel>{item.category}</SectionLabel>
           <span className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center ${iconColor}`}>
@@ -942,13 +948,15 @@ function ServiceCard({
     <div ref={ref} className="reveal h-full" style={{ transitionDelay: `${index * 90}ms` }}>
       <Link
         href={`${svc.href}?lang=${lang}`}
-        className={`bento-card rounded-[1.75rem] ${serviceBg[index]} p-7 flex flex-col h-full hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ease-in-out`}
+        className={`relative bento-card rounded-[1.75rem] ${serviceBg[index]} p-7 flex flex-col h-full overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ease-in-out`}
       >
+        <span className="absolute top-5 right-6 text-5xl lg:text-6xl font-black text-mustard/50 leading-none select-none">
+          {svc.number}
+        </span>
         <div className="flex items-start justify-between mb-6">
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
             <Icon className="w-5 h-5 text-primary" />
           </div>
-          <span className="text-[10px] tracking-widest text-muted-foreground">{svc.number}</span>
         </div>
         <h3 className={`text-base mb-3 ${isJp ? "font-black tracking-normal" : "font-bold tracking-wide"}`}>{svc.title}</h3>
         <p className="text-[15px] text-muted-foreground leading-relaxed flex-1">{svc.catch}</p>
@@ -1061,7 +1069,7 @@ function Footer({ lang }: { lang: Lang }) {
 
               {/* Instagram — gradient badge */}
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/mk_engineer_35?utm_source=qrm"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="sns-icon-btn w-10 h-10 rounded-[14px]"

@@ -61,9 +61,13 @@ function WorkDetailContent({ detail, basePath }: { detail: WorkDetailData; baseP
             {t.title}
           </h1>
 
-          <p className="text-muted-foreground leading-relaxed mb-10 text-base">
+          <p className="text-muted-foreground leading-relaxed mb-6 text-base">
             {t.overview}
           </p>
+
+          <div className="flex flex-wrap gap-1.5 mb-10">
+            {t.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          </div>
 
           <h2 className="text-[12px] tracking-[0.2em] uppercase font-semibold text-primary mb-4">
             {t.subheading}
@@ -76,10 +80,6 @@ function WorkDetailContent({ detail, basePath }: { detail: WorkDetailData; baseP
               </li>
             ))}
           </ul>
-
-          <div className="flex flex-wrap gap-1.5">
-            {t.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-          </div>
         </div>
       </div>
     </main>
